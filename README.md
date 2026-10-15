@@ -13,7 +13,7 @@ Jubanissov Daniyar   |  ADR 1: context, decision, alternatives, consequences
 
 
 # container diagram:
-![img.png](img.png)
+![Container_diagram.jpg](src/main/resources/Container_diagram.jpg)
 
 
 
