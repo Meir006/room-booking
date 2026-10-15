@@ -2,21 +2,24 @@
 App lets students book empty rooms safely while locking taken slots. Professors can also schedule lectures. Built with Spring Boot and PostgreSQL.
 
 ## Team
-Name                 |       Contributions
+Name                 |       ID
 
-Turgunbay Meiirbek   |   container diagram, repository setup: readme, maven and spring boot configuration(pom.xml)
+Turgunbay Meiirbek   |   240107022
 
-Daulet Aladi         |   Architecture choice:one selected style and one rejected alternative
+Daulet Aladi         |   240107102
 
-Jubanissov Daniyar   |  ADR 1: context, decision, alternatives, consequences
+Jubanissov Daniyar   |   240107038
 
 
 
-# container diagram:
+# Container diagram:
 ![Container_diagram.jpg](src/main/resources/Container_diagram.jpg)
 
 
 
+
+# Architecture style
+The architecture we are using is Layered Modular Monolith. The Layered architecture was chosen due to the fixed order of access flow, and Modular Monolith architecture was added since some layers have to consist of several modules, hence the combination of the 2.
 
 ## Repository structure
 
@@ -27,7 +30,7 @@ room-booking/
 └── README.md
 ```
 
-# how to run
+# How to run
 Instructions will be added after the first working version.
 Requirements: Java 21, Maven.
 
