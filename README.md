@@ -13,7 +13,7 @@ Jubanissov Daniyar   |   240107038
 
 
 # Container diagram:
-![Container_diagram.jpg](room-booking-application\src\main\resources\Container_diagram.jpg)
+![Container_diagram.jpg](room-booking-application/src/main/resources/Container_diagram.jpg)
 
 
 
