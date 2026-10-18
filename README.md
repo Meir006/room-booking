@@ -23,8 +23,6 @@ The architecture we are using is Layered Modular Monolith. The Layered architect
 
 # Architecture Decision Record (ADR #1): Asynchronous Email Notifications
 
----
-
 ### 1. Context
 
 Email delivery may be delayed or temporarily unavailable. Booking submissions and approval decisions should remain responsive even when notifications cannot be delivered immediately.
