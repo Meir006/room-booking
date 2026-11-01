@@ -1,8 +1,10 @@
+/* universal stuff */
+
 body {
-    background-color: lightgray;
     margin: 0;
     padding: 0;
     font-family: Arial;
+    background-color: #f1efef;
 }
 
 h1 {
@@ -10,29 +12,54 @@ h1 {
 }   
 
 header {
-    background-color: darkgray;
-    height: 100px;
+    background-color: #202020;
+    color: white;
+    height: 150px;
     display: flex;
     align-items: center; 
-    justify-content: center;
+    justify-content: space-between;
+    padding: 30px 0 0 0;
+    flex-direction: column;
+    margin: 3px;
+    border-radius: 5px;
 }
 
 header h1 {
     font-size: 40px;
-    font-weight: 900;
+    font-weight: 700;
 }
 
-#select {
-    text-align: center;
+header hr {
+    border: none;
+    height: 1px;
+    background-color: white;
+    width: 400px;
+    margin: 20px auto 0;
+}
+
+#pageName {
     font-size: 20px;
 } 
+
+#body {
+    margin: 3px;
+    padding: 20px 0;
+    border-radius: 5px;
+    background-color: rgb(250, 250, 250);
+}
+
+button:hover {
+    transform: scale(1.02);
+}
+
+/* home page */
 
 .buttons {
     display: flex;
     align-items: center; 
     justify-content: space-between;
-    width: 33%;
-    margin: 0 auto;
+    width: 50%;
+    margin: 30px auto;
 }
 
 .buttons a {
@@ -43,10 +70,10 @@ header h1 {
     border: none;
     background-color: darkgreen;
     color: white;
-    width: 300px;
-    height: 400px;
+    width: 450px;
+    height: 600px;
     border-radius: 10px;
-    font-size: 30px;
+    font-size: 45px;
     font-weight: bold;
     cursor: pointer;
     padding: 50px;
@@ -57,9 +84,124 @@ header h1 {
 }
 
 .buttons a:hover {
-    transform: scale(1.05);
+    transform: scale(1.02);
 }
 
+.divisor {
+    border: none;
+    height: 1px;
+    background-color: rgb(218, 218, 218);
+    width: 80%;
+    margin: 20px auto 30px;
+}
+
+/* construction page */
+
 #construction {
+    text-align: center;
+    margin: 30px;
+}
+
+/* booking time select page */
+
+#query {
+    width: 90%;
+    margin: 0 auto;
+    padding: 10px;
+    border-radius: 3px;
+}
+
+#query form {
+    width: 80%;
+    margin: 0 auto;
+    display: flex;
+    justify-content: space-between;
+}
+
+#query .field {
+    font-weight: bold;
+    font-size: 20px;
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+}
+
+#query .field input {
+    border: none;
+    background-color: rgb(99, 98, 98);
+    color: white;
+    font-size: 20px;
+    border-radius: 3px;
+    text-align: center;
+}
+
+#query .field input::placeholder {
+    color: rgb(189, 187, 187);
+}
+
+#query #submit {
+    border: none;
+    background-color: darkgreen;
+    color: white;
+    font-size: 20px;
+    font-weight: bold;
+    border-radius: 3px;
+    width: 100px;
+    cursor: pointer;
+    transition: transform 0.4s ease;
+}
+
+#booking {
+    width: 80%;
+    margin: 0 auto;
+}
+
+#booking table {
+    font-size: 20px;
+    width: 100%;
+}
+
+#booking tr {
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    width: 70%;
+    margin: 0 auto;
+    border-bottom: 1px solid #ddd;
+}
+
+#booking th, td {
+    padding: 12px;
+    text-align: center;
+    overflow-wrap: anywhere;
+    width: 8%; 
+}
+
+#booking tbody th, #booking tbody td {
+    font-weight: 500;
+    font-size: 19px;
+}
+
+#booking tbody tr:last-child {
+    border-bottom: none;
+}
+
+#booking button {
+    background-color: darkgreen;
+    border: none;
+    border-radius: 3px;
+    color: white;
+    cursor: pointer;
+    font-weight: 600;
+    font-size: 16px;
+    padding: 5px;
+    transition: transform 0.4s ease;
+}
+
+#none {
+    width: 40%;
+    margin: 50px auto;
+    font-size: 30px;
+    font-weight: bold;
     text-align: center;
 }

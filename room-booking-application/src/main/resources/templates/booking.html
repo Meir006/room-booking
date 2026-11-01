@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -11,16 +11,79 @@
 <body>
     <header>
         <h1>Classroom Booking</h1>
+        <hr>
+        <div id="pageName">
+            <h2 class="pageName">Available rooms</h2>
+        </div>
     </header>
 
-    <main>
+    <main id="body">
 
-        <section id="select">
-            <h2 class="select">Request Booking</h2>
+        <section id="query">
+            <form action="/booking" method="get">
+                <div class="field">
+                    <label>Date:</label>
+                    <input type="date" name="date">
+                </div>
+
+                <div class="field">
+                    <label>Start time:</label>
+                    <input type="time" name="startTime">
+                </div>
+
+                <div class="field">
+                    <label>End time:</label>
+                    <input type="time" name="endTime">
+                </div>
+
+                <div class="field">
+                    <label>Block:</label>
+                    <input type="text" name="block" placeholder="A">
+                </div>
+                
+                <div class="field">
+                    <label>Floor:</label>
+                    <input type="number" name="floor" min="0" placeholder="1">
+                </div>
+
+                <button type="submit" id="submit">Search</button>
+
+            </form>
         </section>
 
-        <section id="construction">
-            <h1>UNDER CONSTRUCTION</h1>
+        <hr class="divisor">
+
+        <section id="booking">
+            <table th:if="${not #lists.isEmpty(rooms)}">
+                <thead>
+                    <tr>
+                        <th>Room</th>
+                        <th>Date</th>
+                        <th>Start</th>
+                        <th>End</th>
+                        <th>Action</th>
+                    </tr>
+                </thead>
+
+                <tbody>
+                    <tr th:each="room : ${rooms}">
+                        <td th:text="${room.room}"></td>
+                        <td th:text="${room.date}"></td>
+                        <td th:text="${room.startTime}"></td>
+                        <td th:text="${room.endTime}"></td>
+                        <td>
+                            <form th:action="@{/booking/create}" method="post">
+                                <input type="hidden" name="roomSlotId" th:value="${room.id}">
+                                <button type="submit">Request Booking</button>
+                            </form>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <p th:if="${#lists.isEmpty(rooms)}" id="none">
+                No available rooms match your filters.
+            </p>
         </section>
 
     </main>
