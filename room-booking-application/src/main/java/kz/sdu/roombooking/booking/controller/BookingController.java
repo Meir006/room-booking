@@ -1,11 +1,11 @@
-package kz.sdu.roombooking.booking;
+package kz.sdu.roombooking.booking.controller;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 
 
 @Controller 
-public class bookingController {
+public class BookingController {
     
     @GetMapping("/booking")
     public String booking() {
