@@ -1,4 +1,4 @@
-package kz.sdu.roombooking.contributioon;
+package kz.sdu.roombooking.contribution;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
