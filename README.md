@@ -50,8 +50,11 @@ Booking and approval operations can complete without waiting for email delivery.
 
 ```
 room-booking/
-├── src/            # Spring Boot code
-├── pom.xml
+├──room-booking-application/
+│  ├── src/            # Spring Boot code
+│  └── pom.xml
+├── .gitattributes
+├── .gitignore
 └── README.md
 ```
 
