@@ -5,7 +5,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 
 
 @Controller 
-public class contributionController {
+public class ContributionController {
     
     @GetMapping("/contribution")
     public String contribution() {
