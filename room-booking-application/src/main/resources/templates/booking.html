@@ -20,30 +20,30 @@
     <main id="body">
 
         <section id="query">
-            <form action="/booking" method="get">
+            <form th:action="@{/booking}" method="get">
                 <div class="field">
-                    <label>Date:</label>
-                    <input type="date" name="date">
+                    <label for="date">Date:</label>
+                    <input type="date" name="date" id="date" th:value="${date}">
                 </div>
 
                 <div class="field">
-                    <label>Start time:</label>
-                    <input type="time" name="startTime">
+                    <label for="startTime">Start time:</label>
+                    <input type="time" name="startTime" id="startTime" th:value="${startTime}">
                 </div>
 
                 <div class="field">
-                    <label>End time:</label>
-                    <input type="time" name="endTime">
+                    <label for="endTime">End time:</label>
+                    <input type="time" name="endTime" id="endTime" th:value="${endTime}">
                 </div>
 
                 <div class="field">
-                    <label>Block:</label>
-                    <input type="text" name="block" placeholder="A">
+                    <label for="block">Block:</label>
+                    <input type="text" name="block" id="block" placeholder="A" th:value="${block}">
                 </div>
                 
                 <div class="field">
-                    <label>Floor:</label>
-                    <input type="number" name="floor" min="0" placeholder="1">
+                    <label for="floor">Floor:</label>
+                    <input type="number" name="floor" id="floor" min="0" placeholder="1" th:value="${floor}">
                 </div>
 
                 <button type="submit" id="submit">Search</button>
