@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Classroom Booking</title>
+    <link rel="stylesheet"
+      href="../static/css/style.css"
+      th:href="@{/css/style.css}">
+</head>
+<body>
+    <header>
+        <h1>Classroom Booking</h1>
+        <hr>
+        <div id="pageName">
+            <h2 class="pageName">Booking Request Status</h2>
+        </div>
+    </header>
+
+    <main id="statusBody">
+        <section class="status">
+            <h1 th:text="'Booking Request #' + ${request.id}">Booking Request #</h1>
+
+            <div class="contRow">
+                <p>Date: <span th:text="${request.roomSlot.date}"></span></p>
+
+                <p>Room: <span th:text="${request.roomSlot.room}"></span></p>
+            </div>
+
+            <div class="contRow">
+                <p>Status: <span th:text="${request.status}"></span></p>
+
+                <p>Contributions: <span th:text="${request.contributions}"></span>/ 5</p>
+            </div>
+        </section>
+
+        <section class="status">
+
+            <h1>Contribution requests</h2>
+
+            <form th:action="@{/contributions/request}" method="post">
+
+                <input type="hidden" name="bookingRequestId" th:value="${request.id}">
+
+                <div class="stInputField">
+                    <label for="recipientId" class="stText">Recipient:</label>
+                    <input type="text" id="recipientId" name="recipientId" placeholder="Student ID" required class="stInput">
+                </div>
+
+                <div class="stInputField">
+                    <label for="message" class="stText">Message:</label>
+                    <textarea id="message" name="message" placeholder="Would you like to contribute to my booking?" required class="stInput"></textarea>
+                </div>
+
+                <button type="submit">Send contribution request</button>
+
+            </form>
+
+        </section>
+    </main>
+
+</body>
+</html>
