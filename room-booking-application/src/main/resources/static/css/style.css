@@ -198,6 +198,7 @@ a:hover {
     font-size: 20px;
     border-radius: 3px;
     text-align: center;
+    color-scheme: dark;
 }
 
 #query .field input::placeholder {
@@ -296,6 +297,11 @@ a:hover {
 
 .pageNum {
     margin: 0 auto;
+}
+
+input[type="date"]::-webkit-calendar-picker-indicator,
+input[type="time"]::-webkit-calendar-picker-indicator {
+    cursor: pointer;
 }
 
 
