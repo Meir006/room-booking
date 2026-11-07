@@ -38,12 +38,12 @@
 
                 <div class="field">
                     <label for="block">Block:</label>
-                    <input type="text" name="block" id="block" placeholder="A" th:value="${block}">
+                    <input type="text" name="block" id="block" placeholder="A" maxlength="1" pattern="[A-Z]{1}" th:value="${block}">
                 </div>
                 
                 <div class="field">
                     <label for="floor">Floor:</label>
-                    <input type="number" name="floor" id="floor" min="0" placeholder="1" th:value="${floor}">
+                    <input type="number" name="floor" id="floor" min="1" placeholder="1" max="3" th:value="${floor}">
                 </div>
 
                 <button type="submit" id="submit">Search</button>
@@ -53,34 +53,48 @@
         <hr class="divisor">
 
         <section id="booking">
-            <table th:if="${not #lists.isEmpty(rooms)}">
-                <thead>
-                    <tr>
-                        <th>Room</th>
-                        <th>Date</th>
-                        <th>Start</th>
-                        <th>End</th>
-                        <th>Action</th>
-                    </tr>
-                </thead>
+            <div class="isNotEmpty" th:if="${not #lists.isEmpty(rooms.content)}">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Room</th>
+                            <th>Date</th>
+                            <th>Start</th>
+                            <th>End</th>
+                            <th>Action</th>
+                        </tr>
+                    </thead>
 
-                <tbody>
-                    <tr th:each="room : ${rooms}">
-                        <td th:text="${room.room}"></td>
-                        <td th:text="${room.date}"></td>
-                        <td th:text="${room.startTime}"></td>
-                        <td th:text="${room.endTime}"></td>
-                        <td>
-                            <form th:action="@{/booking/create}" method="post">
-                                <input type="hidden" name="roomSlotId" th:value="${room.id}">
-                                <button type="submit">Request Booking</button>
-                            </form>
-                        </td>
-                    </tr>
-                </tbody>
-            </table>
+                    <tbody>
+                        <tr th:each="room : ${rooms.content}">
+                            <td th:text="${room.room}"></td>
+                            <td th:text="${room.date}"></td>
+                            <td th:text="${room.startTime}"></td>
+                            <td th:text="${room.endTime}"></td>
+                            <td>
+                                <form th:action="@{/booking/create}" method="post">
+                                    <input type="hidden" name="roomSlotId" th:value="${room.id}">
+                                    <button type="submit">Request Booking</button>
+                                </form>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
 
-            <p th:if="${#lists.isEmpty(rooms)}" id="none">
+                <div id="pagination">
+                    <a th:if="${rooms.hasPrevious()}" th:href="@{/booking(page=${rooms.number - 1}, 
+                    date=${date}, startTime=${startTime}, endTime=${endTime}, block=${block}, floor=${floor})}"> Previous </a>
+
+                    <div class="pageNum">
+                        <span th:text="${rooms.number + 1}"></span> / <span th:text="${rooms.totalPages}"></span>
+                    </div>
+
+                    <a th:if="${rooms.hasNext()}" th:href="@{/booking(page=${rooms.number + 1}, 
+                    date=${date}, startTime=${startTime}, endTime=${endTime}, block=${block}, floor=${floor})}"> Next </a>
+                </div>
+            </div>
+
+            <p th:if="${#lists.isEmpty(rooms.content)}" id="none">
                 No available rooms match your filters.
             </p>
         </section>

@@ -20,12 +20,16 @@ public class BookingRequest {
     @JoinColumn(name = "room_slot_id", nullable = false)
     private RoomSlot roomSlot;
 
+    @Column(nullable = false)
+    private String userId;
+
     private int contributions = 0;
 
     @Enumerated(EnumType.STRING)
     private BookingStatus status = BookingStatus.PENDING;
 
-    public BookingRequest(RoomSlot roomSlot) {
+    public BookingRequest(RoomSlot roomSlot, String userId) {
         this.roomSlot = roomSlot;
+        this.userId = userId;
     }
 }

@@ -2,20 +2,23 @@ package kz.sdu.roombooking.booking.service;
 
 import java.time.LocalDate;
 import java.time.LocalTime;
-import java.util.List;
 import java.util.Optional;
+
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Page;
+import org.springframework.stereotype.Service;
 
 import kz.sdu.roombooking.booking.model.BookingRequest;
 import kz.sdu.roombooking.booking.model.RoomSlot;
 
+@Service
 public class BookingService {
-
     
-    public List<RoomSlot> searchRooms(LocalDate date, LocalTime start, LocalTime end, String block, Integer floor) { return null; }
+    public Page<RoomSlot> searchRooms(LocalDate date, LocalTime start, LocalTime end, String block, Integer floor, Pageable page) { return null; }
 
-    public BookingRequest createBooking(long roomSlotId) { return null; }
+    public BookingRequest createBooking(Long roomSlotId, String userId) { return null; }
 
-    public BookingRequest getBookingRequest(long requestId) { return null; }
+    public BookingRequest getBookingRequest(Long requestId) { return null; }
 
-    public Optional<BookingRequest> getActiveRequest(/* id here later */) { return Optional.empty(); }
+    public Optional<BookingRequest> getActiveRequest(String userId) { return Optional.empty(); }
 }
