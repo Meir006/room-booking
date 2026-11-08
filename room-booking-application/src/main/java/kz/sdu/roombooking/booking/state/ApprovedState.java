@@ -6,13 +6,11 @@ public class ApprovedState implements BookingState {
 
     @Override
     public void addContribution(BookingRequest request) {
-        throw new IllegalStateException(
-                "Approved booking requests cannot accept contributions");
+        throw new IllegalStateException("Approved booking requests cannot accept contributions");
     }
 
     @Override
     public void approve(BookingRequest request) {
-        throw new IllegalStateException(
-                "Booking request is already approved");
+        throw new IllegalStateException("Booking request is already approved");
     }
 }

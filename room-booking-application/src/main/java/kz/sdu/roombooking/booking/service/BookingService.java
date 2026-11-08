@@ -2,7 +2,6 @@ package kz.sdu.roombooking.booking.service;
 
 import java.time.LocalDate;
 import java.time.LocalTime;
-import java.util.List;
 import java.util.Optional;
 
 import kz.sdu.roombooking.booking.model.BookingStatus;
@@ -65,7 +64,7 @@ public class BookingService {
     public Optional<BookingRequest> getActiveRequest(String userId) {
         return bookingRequestRepository.findFirstByUserIdAndStatus(userId, BookingStatus.PENDING);
     }
-    
+
 
     @Transactional
     public void addContribution(Long requestId) {
