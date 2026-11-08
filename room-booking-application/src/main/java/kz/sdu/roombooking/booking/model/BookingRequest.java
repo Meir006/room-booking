@@ -1,6 +1,8 @@
 package kz.sdu.roombooking.booking.model;
 
 import jakarta.persistence.*;
+import kz.sdu.roombooking.booking.state.BookingState;
+import kz.sdu.roombooking.booking.state.PendingState;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.NoArgsConstructor;
@@ -28,8 +30,19 @@ public class BookingRequest {
     @Enumerated(EnumType.STRING)
     private BookingStatus status = BookingStatus.PENDING;
 
+    @Transient
+    private BookingState state = new PendingState();
+
     public BookingRequest(RoomSlot roomSlot, String userId) {
         this.roomSlot = roomSlot;
         this.userId = userId;
+    }
+
+    public void addContribution() {
+        state.addContribution(this);
+    }
+
+    public void approve() {
+        state.approve(this);
     }
 }

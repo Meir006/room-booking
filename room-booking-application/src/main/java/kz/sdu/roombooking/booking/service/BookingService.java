@@ -33,20 +33,20 @@ public class BookingService {
         LocalTime end, String block,
         Integer floor, Pageable page) {
 
-    Specification<RoomSlot> specification = RoomSlotSpecification.searchAvailable(date, start, end, block, floor);
+        Specification<RoomSlot> specification = RoomSlotSpecification.searchAvailable(date, start, end, block, floor);
 
-    return roomSlotRepository.findAll(specification, page);
-}
+        return roomSlotRepository.findAll(specification, page);
+    }
 
     @Transactional
     public BookingRequest createBooking(Long roomSlotId, String userId) {
-        if(getActiveRequest(userId).isPresent()) {
+        if (getActiveRequest(userId).isPresent()) {
             throw new IllegalStateException("You already have an active booking request");
         }
 
         RoomSlot roomSlot = roomSlotRepository.findById(roomSlotId).orElseThrow(() -> new ResourceNotFoundException("Room slot not found" + roomSlotId));
 
-        if(!roomSlot.isFree()){
+        if (!roomSlot.isFree()){
             throw new ConflictException("Room slot is not free");
         }
         roomSlot.setFree(false);
@@ -57,12 +57,27 @@ public class BookingService {
 
 
     public BookingRequest getBookingRequest(Long requestId) {
-        return bookingRequestRepository.findById(requestId)
-                .orElseThrow(() -> new ResourceNotFoundException("Booking request not found: " + requestId));}
+        return bookingRequestRepository.findById(requestId).orElseThrow(() -> new ResourceNotFoundException("Booking request not found: " + requestId));
+    }
 
 
 
     public Optional<BookingRequest> getActiveRequest(String userId) {
         return bookingRequestRepository.findFirstByUserIdAndStatus(userId, BookingStatus.PENDING);
+    }
+    
+
+    @Transactional
+    public void addContribution(Long requestId) {
+
+        BookingRequest request = getBookingRequest(requestId);
+
+        request.addContribution();
+
+        if (request.getContributions() >= 5) {
+            request.approve();
+        }
+
+        bookingRequestRepository.save(request);
     }
 }
