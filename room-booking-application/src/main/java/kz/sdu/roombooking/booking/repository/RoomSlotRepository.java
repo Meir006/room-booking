@@ -15,8 +15,9 @@ public interface RoomSlotRepository extends JpaRepository<RoomSlot, Long> {
     @Query("SELECT s FROM RoomSlot s WHERE s.date = :date " +
             "AND s.block = :block " +
             "AND s.floor = :floor " +
-            "AND s.startTime >= :startTime " +
-            "AND s.endTime <= :endTime")
+            "AND s.startTime > :startTime " +
+            "AND s.endTime < :endTime " +
+            "AND s.isFree = true")
     Page<RoomSlot> findAvailableSlots(
             @Param("date") LocalDate date,
             @Param("startTime") LocalTime startTime,
