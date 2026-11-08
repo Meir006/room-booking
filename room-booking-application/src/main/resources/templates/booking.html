@@ -17,8 +17,9 @@
         </div>
     </header>
 
+    <div th:replace="~{fragments/id :: userInfo}"></div> 
+       
     <main id="body">
-
         <section id="query">
             <form th:action="@{/booking}" method="get">
                 <div class="field">
