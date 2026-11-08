@@ -5,6 +5,11 @@ import java.time.LocalTime;
 import java.util.List;
 import java.util.Optional;
 
+import kz.sdu.roombooking.booking.model.BookingStatus;
+import kz.sdu.roombooking.booking.repository.BookingRequestRepository;
+import kz.sdu.roombooking.booking.repository.RoomSlotRepository;
+import lombok.RequiredArgsConstructor;
+import org.springframework.data.crossstore.ChangeSetPersister;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
@@ -14,13 +19,23 @@ import kz.sdu.roombooking.booking.model.BookingRequest;
 import kz.sdu.roombooking.booking.model.RoomSlot;
 
 @Service
+@RequiredArgsConstructor
 public class BookingService {
-    
-    public Page<RoomSlot> searchRooms(LocalDate date, LocalTime start, LocalTime end, String block, Integer floor, Pageable page) { return new PageImpl<>(List.of()); }
+    private final RoomSlotRepository roomSlotRepository;
+    private final BookingRequestRepository bookingRequestRepository;
 
-    public BookingRequest createBooking(Long roomSlotId, String userId) { return null; }
+    public Page<RoomSlot> searchRooms(LocalDate date, LocalTime start,
+                                      LocalTime end, String block,
+                                      Integer floor, Pageable page) {
+        return roomSlotRepository.findAvailableSlots(date, start, end, block, floor, page);
+    }
+
+    public BookingRequest createBooking(Long roomSlotId, String userId) {
+        return null; }
 
     public BookingRequest getBookingRequest(Long requestId) { return null; }
 
-    public Optional<BookingRequest> getActiveRequest(String userId) { return Optional.empty(); }
+    public Optional<BookingRequest> getActiveRequest(String userId, BookingStatus status) {
+        return bookingRequestRepository.findFirstByUserIdAndStatus(userId, status);
+    }
 }
