@@ -17,6 +17,8 @@
         </div>
     </header>
 
+    <div th:replace="~{fragments/id :: userInfo}"></div>
+
     <main id="statusBody">
         <section class="status">
             <h1 th:text="'Booking Request #' + ${request.id}">Booking Request #</h1>

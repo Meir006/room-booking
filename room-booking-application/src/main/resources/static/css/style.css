@@ -57,6 +57,49 @@ textarea {
     resize: none;
 }
 
+.userInfo {
+    background-color: #202020;
+    border-radius: 5px 5px 0 0;
+    width: 100%;
+    min-height: 50px;
+    color: white;
+    font-size: 18px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+}
+
+#logoutButton {
+    background-color: #292828;
+    border-radius: 0 0 5px 5px;
+    width: 100%;
+    height: 30px;
+    color: white;
+    font-size: 18px;
+    border: none;
+    cursor: pointer;
+    margin-top: -3px;
+}
+
+#logoutButton {
+    transform: none;
+}
+
+.userInfoContainer {
+    position: absolute;
+    top: 20%;
+    left: 3px;
+    width: 8%;
+    display: flex;
+    flex-direction: column;
+    transition: transform 0.4s ease;
+}
+
+.userInfoContainer:hover {
+    transform: scale(1.02);
+}
+
 
 /* home page */
 
@@ -123,14 +166,22 @@ a:hover {
     justify-content: space-around;
 }
 
+.idInput {
+    display: flex;
+    flex-direction: row;
+    width: 100%;
+    justify-content: space-between;
+    align-items: center;
+}
+
 #notLogged label {
     font-size: 20px;
     font-weight: bold;
-    width: 20%;
+    width: 25%;
 }
 
 #notLogged input {
-    width: 80%;
+    width: 75%;
     border: none;
     background-color: #202020;
     color: white;
