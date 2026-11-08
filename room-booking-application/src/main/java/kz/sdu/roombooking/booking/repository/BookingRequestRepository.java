@@ -1,5 +1,7 @@
 package kz.sdu.roombooking.booking.repository;
 
-public class BookingRequestRepository {
-    
+import kz.sdu.roombooking.booking.model.BookingRequest;
+import org.springframework.data.jpa.repository.JpaRepository;
+
+public interface BookingRequestRepository extends JpaRepository<BookingRequest, Long> {
 }
