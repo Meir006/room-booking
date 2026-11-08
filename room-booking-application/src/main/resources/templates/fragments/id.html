@@ -1,5 +1,11 @@
-<div th:fragment="userInfo" class="userInfo">
-    <span>
-        Logged in as: <strong th:text="${session.userId}"></strong>
-    </span>
+<div th:fragment="userInfo" class="userInfoContainer">
+    <div class="userInfo">
+        <span>
+            Logged in as: <strong th:text="${session.userId}"></strong>
+        </span>
+    </div>
+
+    <form th:action="@{/logout}" method="post">
+        <button type="submit" id="logoutButton">Log out</button>
+    </form>
 </div>
