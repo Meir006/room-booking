@@ -8,13 +8,13 @@ import java.util.Optional;
 import kz.sdu.roombooking.booking.model.BookingStatus;
 import kz.sdu.roombooking.booking.repository.BookingRequestRepository;
 import kz.sdu.roombooking.booking.repository.RoomSlotRepository;
+import kz.sdu.roombooking.booking.repository.RoomSlotSpecification;
 import kz.sdu.roombooking.exception.ConflictException;
 import kz.sdu.roombooking.exception.ResourceNotFoundException;
 import lombok.RequiredArgsConstructor;
-import org.springframework.data.crossstore.ChangeSetPersister;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageImpl;
 import org.springframework.stereotype.Service;
 
 
@@ -28,11 +28,15 @@ public class BookingService {
     private final RoomSlotRepository roomSlotRepository;
     private final BookingRequestRepository bookingRequestRepository;
 
-    public Page<RoomSlot> searchRooms(LocalDate date, LocalTime start,
-                                      LocalTime end, String block,
-                                      Integer floor, Pageable page) {
-        return roomSlotRepository.findAvailableSlots(date, start, end, block, floor, page);
-    }
+    public Page<RoomSlot> searchRooms(
+        LocalDate date, LocalTime start,
+        LocalTime end, String block,
+        Integer floor, Pageable page) {
+
+    Specification<RoomSlot> specification = RoomSlotSpecification.searchAvailable(date, start, end, block, floor);
+
+    return roomSlotRepository.findAll(specification, page);
+}
 
     @Transactional
     public BookingRequest createBooking(Long roomSlotId, String userId) {
