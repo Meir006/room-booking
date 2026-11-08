@@ -57,6 +57,20 @@ textarea {
     resize: none;
 }
 
+.userInfo {
+    background-color: #202020;
+    margin: 3px;
+    border-radius: 5px;
+    width: 8%;
+    height: 50px;
+    color: white;
+    font-size: 18px;
+    display: flex;
+    align-items: center;
+    text-align: center;
+    position: absolute;
+}
+
 
 /* home page */
 
@@ -123,14 +137,22 @@ a:hover {
     justify-content: space-around;
 }
 
+.idInput {
+    display: flex;
+    flex-direction: row;
+    width: 100%;
+    justify-content: space-between;
+    align-items: center;
+}
+
 #notLogged label {
     font-size: 20px;
     font-weight: bold;
-    width: 20%;
+    width: 25%;
 }
 
 #notLogged input {
-    width: 80%;
+    width: 75%;
     border: none;
     background-color: #202020;
     color: white;
