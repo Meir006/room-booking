@@ -69,8 +69,8 @@ public class BookingController {
 
         Pageable pageable = PageRequest.of(page, 10);
 
-        // model.addAttribute("rooms", bookingService.searchRooms(date, startTime, endTime, block, floor, pageable));
-        model.addAttribute("rooms", new PageImpl<RoomSlot>(List.of()));
+        model.addAttribute("rooms", bookingService.searchRooms(date, startTime, endTime, block, floor, pageable));
+        //model.addAttribute("rooms", new PageImpl<RoomSlot>(List.of()));
 
         return "booking";
     }
