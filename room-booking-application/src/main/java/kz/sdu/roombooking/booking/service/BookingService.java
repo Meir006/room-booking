@@ -41,7 +41,7 @@ public class BookingService {
     @Transactional
     public BookingRequest createBooking(Long roomSlotId, String userId) {
         if(getActiveRequest(userId).isPresent()) {
-            throw new ResourceNotFoundException("You already have an active booking request");
+            throw new IllegalStateException("You already have an active booking request");
         }
 
         RoomSlot roomSlot = roomSlotRepository.findById(roomSlotId).orElseThrow(() -> new ResourceNotFoundException("Room slot not found" + roomSlotId));

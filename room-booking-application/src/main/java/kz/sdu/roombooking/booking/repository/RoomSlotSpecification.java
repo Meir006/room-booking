@@ -11,12 +11,7 @@ import java.util.List;
 
 public class RoomSlotSpecification {
 
-    public static Specification<RoomSlot> searchAvailable(
-            LocalDate date,
-            LocalTime startTime,
-            LocalTime endTime,
-            String block,
-            Integer floor) {
+    public static Specification<RoomSlot> searchAvailable(LocalDate date, LocalTime startTime, LocalTime endTime, String block, Integer floor) {
 
         return (root, query, criteriaBuilder) -> {
 
