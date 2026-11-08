@@ -2,11 +2,9 @@ package kz.sdu.roombooking.booking.controller;
 
 import java.time.LocalDate;
 import java.time.LocalTime;
-import java.util.List;
 import java.util.Optional;
 
 import org.springframework.data.domain.PageRequest;
-import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -18,12 +16,9 @@ import org.springframework.web.bind.annotation.RequestParam;
 import jakarta.servlet.http.HttpSession;
 
 import kz.sdu.roombooking.booking.model.BookingRequest;
-import kz.sdu.roombooking.booking.model.RoomSlot;
 import kz.sdu.roombooking.booking.service.BookingService;
 
 import org.springframework.data.domain.Pageable;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.PageImpl;
 
 
 @Controller 
@@ -68,10 +63,9 @@ public class BookingController {
             page = 0;
         }
 
-        Pageable pageable = PageRequest.of(page, 10);
+        Pageable pageable = PageRequest.of(page, 6);
 
         model.addAttribute("rooms", bookingService.searchRooms(date, startTime, endTime, block, floor, pageable));
-        //model.addAttribute("rooms", new PageImpl<RoomSlot>(List.of()));
 
         return "booking";
     }

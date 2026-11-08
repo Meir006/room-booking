@@ -100,6 +100,10 @@ textarea {
     transform: scale(1.02);
 }
 
+a {
+    text-decoration: none;
+}
+
 
 /* home page */
 
@@ -291,7 +295,7 @@ a:hover {
     padding: 12px;
     text-align: center;
     overflow-wrap: anywhere;
-    width: 8%; 
+    width: 10%; 
 }
 
 #booking tbody th, #booking tbody td {
