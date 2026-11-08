@@ -31,3 +31,14 @@ build/
 
 ### VS Code ###
 .vscode/
+
+# Local database credentials
+application-local.properties
+
+# Environment files
+.env
+.env.local
+
+# macOS
+.DS_Store
+**/ .DS_Store

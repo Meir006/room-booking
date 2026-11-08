@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Classroom Booking</title>
+    <link rel="stylesheet"
+      href="../static/css/style.css"
+      th:href="@{/css/style.css}">
+</head>
+<body>
+    <header>
+        <h1>Classroom Booking</h1>
+        <hr>
+        <div id="pageName">
+            <div th:if="${!loggedIn}">
+                <h2 class="pageName">Login</h2>
+            </div>
+
+            <div th:if="${loggedIn}">
+                <h2 class="pageName">Select Action</h2>
+            </div>
+            
+        </div>
+    </header>
+
+    <div th:if="${loggedIn}"><div th:replace="~{fragments/id :: userInfo}"></div></div>
+    
+    <main id="homeBody">
+        <div th:if="${!loggedIn}" id="notLogged">
+            <form th:action="@{/login}" method="post">
+                <h1>Login</h1>
+                <div class="idInput">
+                    <label for="userId">University ID:</label>
+                    <input type="text" id="userId" name="userId" pattern="[0-9]{9}" required>
+                </div>
+                <button type="submit">Log in</button>
+            </form>
+        </div>
+
+
+        <div th:if="${loggedIn}" id="logged">
+            <section id="buttons">
+                <div class="buttons">
+                    <a href="/booking">Request Booking</a>
+                    <a href="/contribution">Contribute to Booking</a>
+                </div>
+            </section>
+        </div>
+        
+    </main>
+    
+</body>
+</html>

@@ -1,0 +1,457 @@
+/* universal stuff */
+
+body {
+    margin: 0;
+    padding: 0;
+    font-family: Arial;
+    background-color: #f1efef;
+}
+
+h1 {
+    margin: 0;
+}   
+
+header {
+    background-color: #202020;
+    color: white;
+    height: 150px;
+    display: flex;
+    align-items: center; 
+    justify-content: space-between;
+    padding: 30px 0 0 0;
+    flex-direction: column;
+    margin: 3px;
+    border-radius: 5px;
+}
+
+header h1 {
+    font-size: 40px;
+    font-weight: 700;
+}
+
+header hr {
+    border: none;
+    height: 1px;
+    background-color: white;
+    width: 400px;
+    margin: 20px auto 0;
+}
+
+#pageName {
+    font-size: 20px;
+    text-align: center;
+} 
+
+#body {
+    margin: 3px;
+    padding: 20px 0;
+    border-radius: 5px;
+    background-color: rgb(250, 250, 250);
+}
+
+button:hover {
+    transform: scale(1.02);
+}
+
+textarea {
+    resize: none;
+}
+
+.userInfo {
+    background-color: #202020;
+    border-radius: 5px 5px 0 0;
+    width: 100%;
+    min-height: 50px;
+    color: white;
+    font-size: 18px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+}
+
+#logoutButton {
+    background-color: #292828;
+    border-radius: 0 0 5px 5px;
+    width: 100%;
+    height: 30px;
+    color: white;
+    font-size: 18px;
+    border: none;
+    cursor: pointer;
+    margin-top: -3px;
+}
+
+#logoutButton {
+    transform: none;
+}
+
+.userInfoContainer {
+    position: absolute;
+    top: 20%;
+    left: 3px;
+    width: 8%;
+    display: flex;
+    flex-direction: column;
+    transition: transform 0.4s ease;
+}
+
+.userInfoContainer:hover {
+    transform: scale(1.02);
+}
+
+a {
+    text-decoration: none;
+}
+
+
+/* home page */
+
+
+
+.buttons {
+    display: flex;
+    align-items: center; 
+    justify-content: space-between;
+    width: 50%;
+    margin: 30px auto;
+}
+
+#homeBody a {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-sizing: border-box;
+    border: none;
+    background-color: darkgreen;
+    color: white;
+    width: 450px;
+    height: 600px;
+    border-radius: 10px;
+    font-size: 45px;
+    font-weight: bold;
+    cursor: pointer;
+    padding: 50px;
+    line-height: 1.5;
+    text-align: center;
+    text-decoration: none;
+    transition: transform 0.4s ease;
+}
+
+a:hover {
+    transform: scale(1.02);
+}
+
+.divisor {
+    border: none;
+    height: 1px;
+    background-color: rgb(218, 218, 218);
+    width: 80%;
+    margin: 20px auto 30px;
+}
+
+#notLogged {
+    height: 300px;
+    width: 30%;
+    background-color: white;
+    margin: 30px auto;
+    border-radius: 5px;
+    padding: 20px;
+    border-color: #202020;
+    border-width: 2px; 
+    border-style: solid;
+}
+
+#notLogged form {
+    width: 100%;
+    height: 80%;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-around;
+}
+
+.idInput {
+    display: flex;
+    flex-direction: row;
+    width: 100%;
+    justify-content: space-between;
+    align-items: center;
+}
+
+#notLogged label {
+    font-size: 20px;
+    font-weight: bold;
+    width: 25%;
+}
+
+#notLogged input {
+    width: 75%;
+    border: none;
+    background-color: #202020;
+    color: white;
+    border-radius: 5px;
+    font-size: 18px;
+    font-weight: bold;
+    height: 30px;
+}
+
+#notLogged button {
+    border: none;
+    border-radius: 9px;
+    background-color: darkgreen;
+    color: white;
+    font-size: 20px;
+    font-weight: bold;
+    height: 50px;
+    transition: transform 0.4s ease;
+    width: 100%;
+    cursor: pointer;
+}
+
+
+/* construction page */
+
+
+
+#construction {
+    text-align: center;
+    margin: 30px;
+}
+
+
+
+/* booking time select page */
+
+
+
+#query {
+    width: 90%;
+    margin: 0 auto;
+    padding: 10px;
+    border-radius: 3px;
+}
+
+#query form {
+    width: 80%;
+    margin: 0 auto;
+    display: flex;
+    justify-content: space-between;
+}
+
+#query .field {
+    font-weight: bold;
+    font-size: 20px;
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+}
+
+#query .field input {
+    border: none;
+    background-color: #202020;
+    color: white;
+    font-size: 20px;
+    border-radius: 3px;
+    text-align: center;
+    color-scheme: dark;
+}
+
+#query .field input::placeholder {
+    color: rgb(189, 187, 187);
+}
+
+#query #submit {
+    border: none;
+    background-color: darkgreen;
+    color: white;
+    font-size: 20px;
+    font-weight: bold;
+    border-radius: 3px;
+    width: 100px;
+    cursor: pointer;
+    transition: transform 0.4s ease;
+}
+
+#booking {
+    width: 80%;
+    margin: 0 auto;
+}
+
+#booking table {
+    font-size: 20px;
+    width: 100%;
+}
+
+#booking tr {
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    width: 70%;
+    margin: 0 auto;
+    border-bottom: 1px solid #ddd;
+}
+
+#booking th, td {
+    padding: 12px;
+    text-align: center;
+    overflow-wrap: anywhere;
+    width: 10%; 
+}
+
+#booking tbody th, #booking tbody td {
+    font-weight: 500;
+    font-size: 19px;
+}
+
+#booking tbody tr:last-child {
+    border-bottom: none;
+}
+
+#booking button {
+    background-color: darkgreen;
+    border: none;
+    border-radius: 3px;
+    color: white;
+    cursor: pointer;
+    font-weight: 600;
+    font-size: 16px;
+    padding: 5px;
+    transition: transform 0.4s ease;
+}
+
+#none {
+    width: 40%;
+    margin: 50px auto;
+    font-size: 30px;
+    font-weight: bold;
+    text-align: center;
+}
+
+#pagination {
+    font-size: 20px;
+    width: 20%;
+    margin: 0 auto;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-weight: bold;
+}
+
+#pagination a {
+    background-color: #202020;
+    border-radius: 5px;
+    width: 30%;
+    height: 50px;
+    color: white;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: transform 0.4s ease;
+}
+
+.pageNum {
+    margin: 0 auto;
+}
+
+input[type="date"]::-webkit-calendar-picker-indicator,
+input[type="time"]::-webkit-calendar-picker-indicator {
+    cursor: pointer;
+}
+
+
+
+/* booking status page */
+
+
+.status {
+    width: 40%;
+    margin: 3px auto;
+    padding: 30px 20px;
+    border-radius: 5px;
+    background-color: white;
+    border-color: #202020;
+    border-width: 2px; 
+    border-style: solid;
+    height: 300px;
+    display: flex;
+    justify-content: space-between;
+    flex-direction: column;
+}
+
+.status .contRow {
+    display: flex;
+}
+
+.status p {
+    font-size: 24px;
+    font-weight: bold;
+    width: 35%;
+}
+
+.status p:first-child {
+    margin-right: 20%;
+}
+
+.status button {
+    border: none;
+    border-radius: 9px;
+    background-color: darkgreen;
+    color: white;
+    font-size: 20px;
+    font-weight: bold;
+    height: 50px;
+    transition: transform 0.4s ease;
+    width: 100%;
+    cursor: pointer;
+}
+
+#statusBody {
+    margin: 3px;
+    padding: 5px 10%;
+    border-radius: 5px;
+    display: flex;
+    justify-content: space-around;
+}
+
+.status form {
+    width: 100%;
+    height: 80%;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-around;
+}
+
+.status .stText {
+    font-size: 20px;
+    font-weight: bold;
+    width: 20%;
+}
+
+.status .stInputField {
+    height: 50px;
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+.status .stInput {
+    width: 80%;
+    border: none;
+    background-color: #202020;
+    color: white;
+    border-radius: 5px;
+    font-size: 18px;
+    font-weight: bold;
+}
+.status input {
+    height: 30px;
+}
+
+.status textarea {
+    height: 50px;
+}
+
+.status input::placeholder, textarea::placeholder {
+    color: rgb(189, 187, 187);
+}

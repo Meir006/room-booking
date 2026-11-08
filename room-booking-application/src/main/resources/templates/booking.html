@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Classroom Booking</title>
+    <link rel="stylesheet"
+      href="../static/css/style.css"
+      th:href="@{/css/style.css}">
+</head>
+<body>
+    <header>
+        <h1>Classroom Booking</h1>
+        <hr>
+        <div id="pageName">
+            <h2 class="pageName">Available rooms</h2>
+        </div>
+    </header>
+
+    <div th:replace="~{fragments/id :: userInfo}"></div> 
+       
+    <main id="body">
+        <section id="query">
+            <form th:action="@{/booking}" method="get">
+                <div class="field">
+                    <label for="date">Date:</label>
+                    <input type="date" name="date" id="date" th:value="${date}">
+                </div>
+
+                <div class="field">
+                    <label for="startTime">Start time:</label>
+                    <input type="time" name="startTime" id="startTime" th:value="${startTime}">
+                </div>
+
+                <div class="field">
+                    <label for="endTime">End time:</label>
+                    <input type="time" name="endTime" id="endTime" th:value="${endTime}">
+                </div>
+
+                <div class="field">
+                    <label for="block">Block:</label>
+                    <input type="text" name="block" id="block" placeholder="A" maxlength="1" pattern="[A-Z]{1}" th:value="${block}">
+                </div>
+                
+                <div class="field">
+                    <label for="floor">Floor:</label>
+                    <input type="number" name="floor" id="floor" min="1" placeholder="1" max="3" th:value="${floor}">
+                </div>
+
+                <button type="submit" id="submit">Search</button>
+            </form>
+        </section>
+
+        <hr class="divisor">
+
+        <section id="booking">
+            <div class="isNotEmpty" th:if="${not #lists.isEmpty(rooms.content)}">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Room</th>
+                            <th>Date</th>
+                            <th>Start</th>
+                            <th>End</th>
+                            <th>Action</th>
+                        </tr>
+                    </thead>
+
+                    <tbody>
+                        <tr th:each="room : ${rooms.content}">
+                            <td th:text="${room.room}"></td>
+                            <td th:text="${room.date}"></td>
+                            <td th:text="${room.startTime}"></td>
+                            <td th:text="${room.endTime}"></td>
+                            <td>
+                                <form th:action="@{/booking/create}" method="post">
+                                    <input type="hidden" name="roomSlotId" th:value="${room.id}">
+                                    <button type="submit">Request Booking</button>
+                                </form>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+
+                <div id="pagination">
+                    <a th:if="${rooms.hasPrevious()}" th:href="@{/booking(page=${rooms.number - 1}, 
+                    date=${date}, startTime=${startTime}, endTime=${endTime}, block=${block}, floor=${floor})}"> Previous </a>
+
+                    <div class="pageNum">
+                        <span th:text="${rooms.number + 1}"></span> / <span th:text="${rooms.totalPages}"></span>
+                    </div>
+
+                    <a th:if="${rooms.hasNext()}" th:href="@{/booking(page=${rooms.number + 1}, 
+                    date=${date}, startTime=${startTime}, endTime=${endTime}, block=${block}, floor=${floor})}"> Next </a>
+                </div>
+            </div>
+
+            <p th:if="${#lists.isEmpty(rooms.content)}" id="none">
+                No available rooms match your filters.
+            </p>
+        </section>
+
+    </main>
+    
+</body>
+</html>
