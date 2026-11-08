@@ -22,7 +22,7 @@ public class BookingService {
     public Page<RoomSlot> searchRooms(LocalDate date, LocalTime start,
                                       LocalTime end, String block,
                                       Integer floor, Pageable page) {
-        return roomSlotRepository.findAll(page);
+        return roomSlotRepository.findAvailableSlots(date, start, end, block, floor, page);
     }
 
     public BookingRequest createBooking(Long roomSlotId, String userId) { return null; }

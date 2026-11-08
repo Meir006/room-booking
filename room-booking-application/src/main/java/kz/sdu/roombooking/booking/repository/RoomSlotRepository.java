@@ -1,6 +1,7 @@
 package kz.sdu.roombooking.booking.repository;
 
 import kz.sdu.roombooking.booking.model.RoomSlot;
+import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
@@ -16,7 +17,7 @@ public interface RoomSlotRepository extends JpaRepository<RoomSlot, Long> {
             "AND s.floor = :floor " +
             "AND s.startTime >= :startTime " +
             "AND s.endTime <= :endTime")
-    List<RoomSlot> findAvailableSlots(
+    Page<RoomSlot> findAvailableSlots(
             @Param("date") LocalDate date,
             @Param("startTime") LocalTime startTime,
             @Param("endTime") LocalTime endTime,
