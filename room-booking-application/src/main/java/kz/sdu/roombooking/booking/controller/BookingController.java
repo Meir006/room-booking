@@ -1,24 +1,20 @@
 package kz.sdu.roombooking.booking.controller;
 
-import java.time.LocalDate;
-import java.time.LocalTime;
-import java.util.Optional;
-
-import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
+import org.springframework.ui.Model;    
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import jakarta.servlet.http.HttpSession;
-
+import kz.sdu.roombooking.booking.dto.RoomSearchCriteria;
 import kz.sdu.roombooking.booking.model.BookingRequest;
+import kz.sdu.roombooking.booking.model.RoomSlot;
 import kz.sdu.roombooking.booking.service.BookingService;
-
-import org.springframework.data.domain.Pageable;
 
 
 @Controller 
@@ -32,40 +28,18 @@ public class BookingController {
     }
     
     @GetMapping
-    public String bookingPage( 
+    public String bookingPage(
             HttpSession session,
+            @ModelAttribute RoomSearchCriteria criteria,
             @RequestParam(defaultValue = "0") int page,
-            @RequestParam(required = false) LocalDate date,
-            @RequestParam(required = false) LocalTime startTime,
-            @RequestParam(required = false) LocalTime endTime,
-            @RequestParam(required = false) String block,
-            @RequestParam(required = false) Integer floor,
             Model model) {
+
         String userId = (String) session.getAttribute("userId");
 
-        if (userId == null) {
-            return "redirect:/";
-        }
+        Page<RoomSlot> roomSlots = bookingService.loadBookingPage(userId, criteria, page);
 
-        Optional<BookingRequest> existing = bookingService.getActiveRequest(userId);
-
-        if (existing.isPresent()) {
-            return "redirect:/booking/" + existing.get().getId();
-        }
-
-        model.addAttribute("date", date);
-        model.addAttribute("startTime", startTime);
-        model.addAttribute("endTime", endTime);
-        model.addAttribute("block", block);
-        model.addAttribute("floor", floor);
-
-        if (page < 0) {
-            page = 0;
-        }
-
-        Pageable pageable = PageRequest.of(page, 6);
-
-        model.addAttribute("rooms", bookingService.searchRooms(date, startTime, endTime, block, floor, pageable));
+        model.addAttribute("criteria", criteria);
+        model.addAttribute("rooms", roomSlots);
 
         return "booking";
     }
@@ -74,28 +48,16 @@ public class BookingController {
     public String createBooking(@RequestParam Long roomSlotId, HttpSession session) {
         String userId = (String) session.getAttribute("userId");
 
-        if (userId == null) {
-            return "redirect:/";
-        }
-
         BookingRequest request = bookingService.createBooking(roomSlotId, userId);
 
         return "redirect:/booking/" + request.getId();
     }
 
-    @GetMapping("/{id}")
-    public String bookingStatus(@PathVariable Long id, Model model, HttpSession session) {
+    @GetMapping("/{requestId}")
+    public String bookingStatus(@PathVariable Long requestId, Model model, HttpSession session) {
         String userId = (String) session.getAttribute("userId");
 
-        if (userId == null) {
-            return "redirect:/";
-        }
-
-        BookingRequest request = bookingService.getBookingRequest(id);
-
-        if (!request.getUserId().equals(userId)) {
-            return "redirect:/";
-        }
+        BookingRequest request = bookingService.bookingStatus(requestId, userId);
 
         model.addAttribute("request", request);
 
