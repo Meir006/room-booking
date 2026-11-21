@@ -91,9 +91,10 @@ Any IDE with Java 21 and Maven, PostgreSQL 18
 
 # How to run
 1) Create a Database "room-booking" in pgAdmin 4 using PostgreSQL.
-2) Go into Query Tools for the database.
-3) Open sql/data.sql in Query Tools.
-4) Press F5 to execute it.
-5) Open and run room-booking-application/src/main/java/kz/sdu/roombooking/RoomBookingApplication.java
-6) Open localhost:8080 on a browser, and you are on the webservice
+2) Open and run room-booking-application/src/main/java/kz/sdu/roombooking/RoomBookingApplication.java: it should fail to start, but creates the outline for the DB
+3) Go into Query Tools for the database.
+4) Open sql/data.sql in Query Tools.
+5) Press F5 to execute it.
+6) Open and run RoomBookingApplication.java again
+7) Open localhost:8080 on a browser, and you are on the webservice
 
