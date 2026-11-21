@@ -22,6 +22,7 @@ import kz.sdu.roombooking.booking.model.BookingStatus;
 import kz.sdu.roombooking.booking.model.RoomSlot;
 import kz.sdu.roombooking.booking.repository.BookingRequestRepository;
 import kz.sdu.roombooking.booking.repository.RoomSlotRepository;
+import kz.sdu.roombooking.exception.ActiveRequestExistsException;
 import kz.sdu.roombooking.exception.ConflictException;
 
 @ExtendWith(MockitoExtension.class)
@@ -66,7 +67,7 @@ class BookingServiceTest {
 
         when(bookingRequestRepository.findFirstByUserIdAndStatus(anyString(), any())).thenReturn(Optional.of(existingRequest));
 
-        assertThrows(IllegalStateException.class, () -> bookingService.createBooking(1L, "student123"));
+        assertThrows(ActiveRequestExistsException.class, () -> bookingService.createBooking(1L, "student123"));
 
         verify(bookingRequestRepository, never()).save(any(BookingRequest.class));
 
