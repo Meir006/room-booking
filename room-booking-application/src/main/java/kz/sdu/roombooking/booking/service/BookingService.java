@@ -63,7 +63,6 @@ public class BookingService {
         if (!roomSlot.isFree()){
             throw new ConflictException("Room slot is not free");
         }
-        roomSlot.setFree(false);
 
         return bookingRequestRepository.save(new BookingRequest(roomSlot, userId));
     }
@@ -89,7 +88,15 @@ public class BookingService {
         bookingRequest.addContribution();
 
         if (bookingRequest.getContributions() >= REQUIRED_CONTRIBUTIONS) {
+            RoomSlot slot = bookingRequest.getRoomSlot();
+
+            if (!slot.isFree()) {
+                throw new ConflictException("This room slot has already been booked");
+            }
+
             bookingRequest.approve();
+            slot.setFree(false);
+            // reject the other pending requests for this slot here (ADR step)
         }
     }
 
