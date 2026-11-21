@@ -14,9 +14,11 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 
-
+import kz.sdu.roombooking.booking.dto.BookingPageData;
+import kz.sdu.roombooking.booking.dto.RoomSearchCriteria;
 import kz.sdu.roombooking.booking.model.BookingRequest;
 import kz.sdu.roombooking.booking.model.RoomSlot;
 import org.springframework.transaction.annotation.Transactional;
@@ -78,5 +80,19 @@ public class BookingService {
         }
 
         bookingRequestRepository.save(request);
+    }
+
+    public BookingPageData getBookingPageData(String userId, RoomSearchCriteria criteria, int page) {
+        Optional<BookingRequest> existing = getActiveRequest(userId);
+
+        Pageable pageable = PageRequest.of(Math.max(page, 0), 6);
+
+        if (existing.isPresent()) {
+            return new BookingPageData(existing, Page.empty());
+        }
+
+        Page<RoomSlot> rooms = searchRooms(criteria.getDate(), criteria.getStartTime(), criteria.getEndTime(), criteria.getBlock(), criteria.getFloor(), pageable);
+
+        return new BookingPageData(Optional.empty(), rooms);
     }
 }

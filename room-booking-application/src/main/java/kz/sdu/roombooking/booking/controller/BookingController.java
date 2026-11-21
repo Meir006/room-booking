@@ -1,24 +1,19 @@
 package kz.sdu.roombooking.booking.controller;
 
-import java.time.LocalDate;
-import java.time.LocalTime;
-import java.util.Optional;
-
-import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import jakarta.servlet.http.HttpSession;
-
+import kz.sdu.roombooking.booking.dto.BookingPageData;
+import kz.sdu.roombooking.booking.dto.RoomSearchCriteria;
 import kz.sdu.roombooking.booking.model.BookingRequest;
 import kz.sdu.roombooking.booking.service.BookingService;
-
-import org.springframework.data.domain.Pageable;
 
 
 @Controller 
@@ -34,12 +29,8 @@ public class BookingController {
     @GetMapping
     public String bookingPage( 
             HttpSession session,
+            @ModelAttribute RoomSearchCriteria criteria,
             @RequestParam(defaultValue = "0") int page,
-            @RequestParam(required = false) LocalDate date,
-            @RequestParam(required = false) LocalTime startTime,
-            @RequestParam(required = false) LocalTime endTime,
-            @RequestParam(required = false) String block,
-            @RequestParam(required = false) Integer floor,
             Model model) {
         String userId = (String) session.getAttribute("userId");
 
@@ -47,25 +38,18 @@ public class BookingController {
             return "redirect:/";
         }
 
-        Optional<BookingRequest> existing = bookingService.getActiveRequest(userId);
-
-        if (existing.isPresent()) {
-            return "redirect:/booking/" + existing.get().getId();
-        }
-
-        model.addAttribute("date", date);
-        model.addAttribute("startTime", startTime);
-        model.addAttribute("endTime", endTime);
-        model.addAttribute("block", block);
-        model.addAttribute("floor", floor);
-
         if (page < 0) {
             page = 0;
         }
 
-        Pageable pageable = PageRequest.of(page, 6);
+        BookingPageData data = bookingService.getBookingPageData(userId, criteria, page);
 
-        model.addAttribute("rooms", bookingService.searchRooms(date, startTime, endTime, block, floor, pageable));
+        if (data.activeRequest().isPresent()) {
+            return "redirect:/booking/" + data.activeRequest().get().getId();
+        }
+
+        model.addAttribute("criteria", criteria);
+        model.addAttribute("rooms", data.rooms());
 
         return "booking";
     }
