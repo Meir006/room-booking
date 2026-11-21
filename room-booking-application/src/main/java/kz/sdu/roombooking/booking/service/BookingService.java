@@ -8,8 +8,10 @@ import kz.sdu.roombooking.booking.model.BookingStatus;
 import kz.sdu.roombooking.booking.repository.BookingRequestRepository;
 import kz.sdu.roombooking.booking.repository.RoomSlotRepository;
 import kz.sdu.roombooking.booking.repository.RoomSlotSpecification;
+import kz.sdu.roombooking.exception.ActiveRequestExistsException;
 import kz.sdu.roombooking.exception.ConflictException;
 import kz.sdu.roombooking.exception.ResourceNotFoundException;
+import kz.sdu.roombooking.exception.UnauthenticatedException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.domain.Specification;
@@ -17,18 +19,22 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 
-import kz.sdu.roombooking.booking.dto.BookingPageData;
 import kz.sdu.roombooking.booking.dto.RoomSearchCriteria;
 import kz.sdu.roombooking.booking.model.BookingRequest;
 import kz.sdu.roombooking.booking.model.RoomSlot;
 import org.springframework.transaction.annotation.Transactional;
 
+
 @Service
 @RequiredArgsConstructor
 public class BookingService {
+    private static final int PAGE_SIZE = 6;
+    private static final int REQUIRED_CONTRIBUTIONS = 5;
+
     private final RoomSlotRepository roomSlotRepository;
     private final BookingRequestRepository bookingRequestRepository;
 
+    @Transactional(readOnly = true)
     public Page<RoomSlot> searchRooms(
         LocalDate date, LocalTime start,
         LocalTime end, String block,
@@ -39,13 +45,20 @@ public class BookingService {
         return roomSlotRepository.findAll(specification, page);
     }
 
+    @Transactional(readOnly = true)
+    public Page<RoomSlot> loadBookingPage(String userId, RoomSearchCriteria criteria, int page) {
+        requireUserWithoutActiveRequest(userId);
+
+        Pageable pageable = PageRequest.of(Math.max(page, 0), PAGE_SIZE);
+
+        return searchRooms(criteria.getDate(), criteria.getStartTime(), criteria.getEndTime(), criteria.getBlock(), criteria.getFloor(), pageable);
+    }
+
     @Transactional
     public BookingRequest createBooking(Long roomSlotId, String userId) {
-        if (getActiveRequest(userId).isPresent()) {
-            throw new IllegalStateException("You already have an active booking request");
-        }
+        requireUserWithoutActiveRequest(userId);
 
-        RoomSlot roomSlot = roomSlotRepository.findById(roomSlotId).orElseThrow(() -> new ResourceNotFoundException("Room slot not found" + roomSlotId));
+        RoomSlot roomSlot = roomSlotRepository.findById(roomSlotId).orElseThrow(() -> new ResourceNotFoundException("Room slot not found " + roomSlotId));
 
         if (!roomSlot.isFree()){
             throw new ConflictException("Room slot is not free");
@@ -55,44 +68,58 @@ public class BookingService {
         return bookingRequestRepository.save(new BookingRequest(roomSlot, userId));
     }
 
+    @Transactional(readOnly = true)
+    public BookingRequest bookingStatus(Long requestId, String userId) {
+        requireUserId(userId);
 
+        BookingRequest request = getBookingRequest(requestId);
 
-    public BookingRequest getBookingRequest(Long requestId) {
-        return bookingRequestRepository.findById(requestId).orElseThrow(() -> new ResourceNotFoundException("Booking request not found: " + requestId));
-    }
+        if (!request.getUserId().equals(userId)) {
+            throw new ResourceNotFoundException("Booking request not found: " + requestId);
+        }
 
-
-
-    public Optional<BookingRequest> getActiveRequest(String userId) {
-        return bookingRequestRepository.findFirstByUserIdAndStatus(userId, BookingStatus.PENDING);
+        return request;
     }
 
 
     @Transactional
     public void addContribution(Long requestId) {
+        BookingRequest bookingRequest = getBookingRequest(requestId);
 
-        BookingRequest request = getBookingRequest(requestId);
+        bookingRequest.addContribution();
 
-        request.addContribution();
-
-        if (request.getContributions() >= 5) {
-            request.approve();
+        if (bookingRequest.getContributions() >= REQUIRED_CONTRIBUTIONS) {
+            bookingRequest.approve();
         }
-
-        bookingRequestRepository.save(request);
     }
 
-    public BookingPageData getBookingPageData(String userId, RoomSearchCriteria criteria, int page) {
-        Optional<BookingRequest> existing = getActiveRequest(userId);
 
-        Pageable pageable = PageRequest.of(Math.max(page, 0), 6);
-
-        if (existing.isPresent()) {
-            return new BookingPageData(existing, Page.empty());
+    private void requireUserId(String userId) {
+        if (userId == null) {
+            throw new UnauthenticatedException();
         }
-
-        Page<RoomSlot> rooms = searchRooms(criteria.getDate(), criteria.getStartTime(), criteria.getEndTime(), criteria.getBlock(), criteria.getFloor(), pageable);
-
-        return new BookingPageData(Optional.empty(), rooms);
     }
+
+    private void requireNoActiveRequest(String userId) {
+        getActiveRequest(userId).ifPresent(activeRequest -> {
+            throw new ActiveRequestExistsException(activeRequest.getId());
+        });
+    }
+
+    // the combination used by both "start booking" paths
+    private void requireUserWithoutActiveRequest(String userId) {
+        requireUserId(userId);
+        requireNoActiveRequest(userId);
+    } 
+
+    @Transactional(readOnly = true)
+    public BookingRequest getBookingRequest(Long requestId) {
+        return bookingRequestRepository.findById(requestId).orElseThrow(() -> new ResourceNotFoundException("Booking request not found: " + requestId));
+    }
+
+    @Transactional(readOnly = true)
+    public Optional<BookingRequest> getActiveRequest(String userId) {
+        return bookingRequestRepository.findFirstByUserIdAndStatus(userId, BookingStatus.PENDING);
+    }
+    
 }
