@@ -37,6 +37,14 @@ public class ContributionService {
         bookingService.addContribution(contributionRequest.getBookingRequest().getId());
     }
 
+    @Transactional
+    public void reject(Long contributionId, String userId) {
+        ContributionRequest contributionRequest = getPendingContributionRequestForReceiver(contributionId, userId);
+
+        contributionRequest.setStatus(ContributionStatus.DECLINED);
+        contributionRequestRepository.save(contributionRequest);
+    }
+
     private ContributionRequest getPendingContributionRequestForReceiver(Long contributionRequestId, String userId) {
         Long receiverId = Long.valueOf(userId);
         ContributionRequest contributionRequest = contributionRequestRepository.findById(contributionRequestId)
