@@ -34,4 +34,13 @@ public class ContributionController {
         }
         contributionService.accept(Long.parseLong(contributionId), userId);
     }
+
+    @PostMapping("/{id}/reject")
+    public void rejectContribution(@PathVariable("id") String contributionId, HttpSession session) {
+        String userId = (String) session.getAttribute("userId");
+        if (userId == null) {
+            throw new UnauthenticatedException();
+        }
+        contributionService.reject(Long.parseLong(contributionId), userId);
+    }
 }
