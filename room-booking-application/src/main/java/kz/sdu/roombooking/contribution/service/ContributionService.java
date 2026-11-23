@@ -27,7 +27,17 @@ public class ContributionService {
         return contributionRequestRepository.findAllByReceiverId(Long.valueOf(userId));
     }
 
-    private ContributionRequest getContributionRequestForReceiver(Long contributionRequestId, String userId) {
+    @Transactional
+    public void accept(Long contributionId, String userId) {
+        ContributionRequest contributionRequest = getPendingContributionRequestForReceiver(contributionId, userId);
+
+        contributionRequest.setStatus(ContributionStatus.ACCEPTED);
+        contributionRequestRepository.save(contributionRequest);
+
+        bookingService.addContribution(contributionRequest.getBookingRequest().getId());
+    }
+
+    private ContributionRequest getPendingContributionRequestForReceiver(Long contributionRequestId, String userId) {
         Long receiverId = Long.valueOf(userId);
         ContributionRequest contributionRequest = contributionRequestRepository.findById(contributionRequestId)
                 .orElseThrow(() -> new ResourceNotFoundException("contribution request not found" + receiverId));
