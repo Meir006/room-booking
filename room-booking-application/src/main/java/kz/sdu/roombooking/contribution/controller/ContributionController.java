@@ -5,9 +5,7 @@ import kz.sdu.roombooking.contribution.model.ContributionRequest;
 import kz.sdu.roombooking.contribution.service.ContributionService;
 import kz.sdu.roombooking.exception.UnauthenticatedException;
 import lombok.RequiredArgsConstructor;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -26,5 +24,14 @@ public class ContributionController {
         }
 
         return contributionService.getContributionRequests(userId);
+    }
+
+    @PostMapping("/{id}/accept")
+    public void acceptContribution(@PathVariable("id") String contributionId, HttpSession session) {
+        String userId = (String) session.getAttribute("userId");
+        if (userId == null) {
+            throw new UnauthenticatedException();
+        }
+        contributionService.accept(Long.parseLong(contributionId), userId);
     }
 }
