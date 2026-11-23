@@ -1,6 +1,7 @@
-package kz.sdu.roombooking.booking.model;
+package kz.sdu.roombooking.contribution.model;
 
 import jakarta.persistence.*;
+import kz.sdu.roombooking.booking.model.BookingRequest;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;

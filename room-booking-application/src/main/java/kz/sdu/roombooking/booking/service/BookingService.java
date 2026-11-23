@@ -40,25 +40,28 @@ public class BookingService {
         LocalTime end, String block,
         Integer floor, Pageable page) {
 
-        Specification<RoomSlot> specification = RoomSlotSpecification.searchAvailable(date, start, end, block, floor);
+        Specification<RoomSlot> specification = RoomSlotSpecification.searchAvailable(date, start,
+                end, block, floor);
 
         return roomSlotRepository.findAll(specification, page);
     }
 
     @Transactional(readOnly = true)
     public Page<RoomSlot> loadBookingPage(String userId, RoomSearchCriteria criteria, int page) {
-        requireUserWithoutActiveRequest(userId);
+        requireUserId(userId); //changed from requireUserWithoutActiveRequest(userId);
 
         Pageable pageable = PageRequest.of(Math.max(page, 0), PAGE_SIZE);
 
-        return searchRooms(criteria.getDate(), criteria.getStartTime(), criteria.getEndTime(), criteria.getBlock(), criteria.getFloor(), pageable);
+        return searchRooms(criteria.getDate(), criteria.getStartTime(),
+                criteria.getEndTime(), criteria.getBlock(), criteria.getFloor(), pageable);
     }
 
     @Transactional
     public BookingRequest createBooking(Long roomSlotId, String userId) {
         requireUserWithoutActiveRequest(userId);
 
-        RoomSlot roomSlot = roomSlotRepository.findById(roomSlotId).orElseThrow(() -> new ResourceNotFoundException("Room slot not found " + roomSlotId));
+        RoomSlot roomSlot = roomSlotRepository.findById(roomSlotId).orElseThrow(() ->
+                new ResourceNotFoundException("Room slot not found " + roomSlotId));
 
         if (!roomSlot.isFree()){
             throw new ConflictException("Room slot is not free");
@@ -121,7 +124,8 @@ public class BookingService {
 
     @Transactional(readOnly = true)
     public BookingRequest getBookingRequest(Long requestId) {
-        return bookingRequestRepository.findById(requestId).orElseThrow(() -> new ResourceNotFoundException("Booking request not found: " + requestId));
+        return bookingRequestRepository.findById(requestId).orElseThrow(() ->
+                new ResourceNotFoundException("Booking request not found: " + requestId));
     }
 
     @Transactional(readOnly = true)
