@@ -35,5 +35,12 @@ public class ContributionRequest {
     @Enumerated(EnumType.STRING)
     private ContributionStatus status = ContributionStatus.PENDING;
 
+    public ContributionRequest(BookingRequest bookingRequest, String senderId, String receiverId, String message) {
+        this.bookingRequest = bookingRequest;
+        this.senderId = senderId;
+        this.receiverId = receiverId;
+        this.message = message;
+    }
+
 
 }
