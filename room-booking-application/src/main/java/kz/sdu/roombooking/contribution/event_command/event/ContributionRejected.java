@@ -1,4 +1,4 @@
-package kz.sdu.roombooking.contribution.event_command;
+package kz.sdu.roombooking.contribution.event_command.event;
 
 import java.time.Instant;
 
