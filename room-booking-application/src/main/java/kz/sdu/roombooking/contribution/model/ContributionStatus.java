@@ -1,4 +1,4 @@
-package kz.sdu.roombooking.booking.model;
+package kz.sdu.roombooking.contribution.model;
 
 public enum ContributionStatus {
     PENDING,

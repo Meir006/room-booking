@@ -24,6 +24,9 @@ public class BookingRequest {
     @JoinColumn(name = "room_slot_id", nullable = false)
     private RoomSlot roomSlot;
 
+    @Version
+    private Long version;
+
     @Column(nullable = false)
     private String userId;
 

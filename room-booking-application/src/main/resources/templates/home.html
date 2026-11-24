@@ -20,12 +20,12 @@
             <div th:if="${loggedIn}">
                 <h2 class="pageName">Select Action</h2>
             </div>
-            
+
         </div>
     </header>
 
     <div th:if="${loggedIn}"><div th:replace="~{fragments/id :: userInfo}"></div></div>
-    
+
     <main id="homeBody">
         <div th:if="${!loggedIn}" id="notLogged">
             <form th:action="@{/login}" method="post">
@@ -47,8 +47,8 @@
                 </div>
             </section>
         </div>
-        
+
     </main>
-    
+
 </body>
 </html>

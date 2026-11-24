@@ -86,17 +86,41 @@ textarea {
     transform: none;
 }
 
-.userInfoContainer {
+/* the only absolutely positioned element */
+.sidePanel {
     position: absolute;
     top: 20%;
     left: 3px;
     width: 8%;
     display: flex;
     flex-direction: column;
+    gap: 5px;              /* space between the id/logout box and Home */
+}
+
+/* now in normal flow: remove position, top, left and width */
+.userInfoContainer {
+    display: flex;
+    flex-direction: column;
     transition: transform 0.4s ease;
 }
 
 .userInfoContainer:hover {
+    transform: scale(1.02);
+}
+
+.homeButton {
+    background-color: #202020;
+    border-radius: 5px;
+    height: 40px;
+    color: white;
+    font-size: 18px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: transform 0.4s ease;
+}
+
+.homeButton:hover {
     transform: scale(1.02);
 }
 

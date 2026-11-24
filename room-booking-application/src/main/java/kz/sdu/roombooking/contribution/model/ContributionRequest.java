@@ -1,6 +1,7 @@
-package kz.sdu.roombooking.booking.model;
+package kz.sdu.roombooking.contribution.model;
 
 import jakarta.persistence.*;
+import kz.sdu.roombooking.booking.model.BookingRequest;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -33,6 +34,13 @@ public class ContributionRequest {
 
     @Enumerated(EnumType.STRING)
     private ContributionStatus status = ContributionStatus.PENDING;
+
+    public ContributionRequest(BookingRequest bookingRequest, String senderId, String receiverId, String message) {
+        this.bookingRequest = bookingRequest;
+        this.senderId = senderId;
+        this.receiverId = receiverId;
+        this.message = message;
+    }
 
 
 }
