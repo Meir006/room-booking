@@ -82,7 +82,7 @@ public class BookingStatisticsListenerTest {
 
         assertEquals(1, repository.count());
 
-        System.out.println("\n\nSUCCESS: No duplicate on double even handling created\n\n");
+        System.out.println("\n\nSUCCESS: No duplicate on double event handling created\n\n");
     }
 
     @Test
