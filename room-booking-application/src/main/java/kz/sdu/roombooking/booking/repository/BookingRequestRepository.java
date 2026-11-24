@@ -8,4 +8,5 @@ import java.util.Optional;
 
 public interface BookingRequestRepository extends JpaRepository<BookingRequest, Long> {
     Optional<BookingRequest> findFirstByUserIdAndStatus(String userId, BookingStatus status);
+    Optional<BookingRequest> findByRoomSlotIdAndStatus(Long slotId, BookingStatus status);
 }

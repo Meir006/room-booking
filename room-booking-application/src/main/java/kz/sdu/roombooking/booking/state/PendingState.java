@@ -15,4 +15,9 @@ public class PendingState implements BookingState {
         request.setStatus(BookingStatus.APPROVED);
         request.setState(new ApprovedState());
     }
+
+    public void reject(BookingRequest request) {
+        request.setStatus(BookingStatus.REJECTED);
+        request.setState(new RejectedState());
+    }
 }

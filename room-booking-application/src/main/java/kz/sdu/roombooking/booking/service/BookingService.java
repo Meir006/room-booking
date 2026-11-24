@@ -17,11 +17,14 @@ import kz.sdu.roombooking.exception.UnauthenticatedException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.domain.Specification;
+import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 
 import kz.sdu.roombooking.booking.dto.RoomSearchCriteria;
+import kz.sdu.roombooking.booking.event.BookingRequestApproved;
+import kz.sdu.roombooking.booking.event.BookingRequestCreated;
 import kz.sdu.roombooking.booking.model.BookingRequest;
 import kz.sdu.roombooking.booking.model.RoomSlot;
 import org.springframework.transaction.annotation.Transactional;
@@ -37,6 +40,8 @@ public class BookingService {
     private final BookingRequestRepository bookingRequestRepository;
     private final ContributionRequestRepository contributionRequestRepository;
 
+    private final ApplicationEventPublisher eventPublisher;
+
     @Transactional(readOnly = true)
     public Page<RoomSlot> searchRooms(
         LocalDate date, LocalTime start,
@@ -51,7 +56,7 @@ public class BookingService {
 
     @Transactional(readOnly = true)
     public Page<RoomSlot> loadBookingPage(String userId, RoomSearchCriteria criteria, int page) {
-        requireUserId(userId); //changed from requireUserWithoutActiveRequest(userId);
+        requireUserId(userId);
 
         Pageable pageable = PageRequest.of(Math.max(page, 0), PAGE_SIZE);
 
@@ -70,7 +75,9 @@ public class BookingService {
             throw new ConflictException("Room slot is not free");
         }
 
-        return bookingRequestRepository.save(new BookingRequest(roomSlot, userId));
+        BookingRequest saved = bookingRequestRepository.save(new BookingRequest(roomSlot, userId));
+        eventPublisher.publishEvent(new BookingRequestCreated(saved.getId(), roomSlot.getRoom(), roomSlot.getBlock(), roomSlot.getFloor(), roomSlot.getDate()));
+        return saved;
     }
 
     @Transactional(readOnly = true)
@@ -114,8 +121,18 @@ public class BookingService {
 
             bookingRequest.approve();
             slot.setFree(false);
-            // reject the other pending requests for this slot here (ADR step)
+            rejectOtherPendingRequests(slot.getId(), bookingRequest.getId());
+
+            eventPublisher.publishEvent(new BookingRequestApproved(bookingRequest.getId(), slot.getRoom(), slot.getBlock(), slot.getFloor(), slot.getDate()));
         }
+    }
+
+    private void rejectOtherPendingRequests(Long slotId, Long approvedRequestId) {
+        bookingRequestRepository.findByRoomSlotIdAndStatus(slotId, BookingStatus.PENDING)
+        .stream()
+        .filter(other -> !other.getId()
+        .equals(approvedRequestId))
+        .forEach(BookingRequest::reject);
     }
 
 
@@ -131,7 +148,6 @@ public class BookingService {
         });
     }
 
-    // the combination used by both "start booking" paths
     private void requireUserWithoutActiveRequest(String userId) {
         requireUserId(userId);
         requireNoActiveRequest(userId);
@@ -139,8 +155,7 @@ public class BookingService {
 
     @Transactional(readOnly = true)
     public BookingRequest getBookingRequest(Long requestId) {
-        return bookingRequestRepository.findById(requestId).orElseThrow(() ->
-                new ResourceNotFoundException("Booking request not found: " + requestId));
+        return bookingRequestRepository.findById(requestId).orElseThrow(() -> new ResourceNotFoundException("Booking request not found: " + requestId));
     }
 
     @Transactional(readOnly = true)

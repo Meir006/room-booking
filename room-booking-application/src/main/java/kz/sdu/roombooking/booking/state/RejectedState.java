@@ -13,4 +13,9 @@ public class RejectedState implements BookingState {
     public void approve(BookingRequest request) {
         throw new IllegalStateException("Booking request is already rejected");
     }
+
+    @Override
+    public void reject(BookingRequest request) {
+        throw new IllegalStateException("Booking request is already rejected");
+    }
 }

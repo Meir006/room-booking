@@ -8,7 +8,6 @@ import kz.sdu.roombooking.contribution.repository.ContributionRequestRepository;
 import kz.sdu.roombooking.exception.ConflictException;
 import kz.sdu.roombooking.exception.ResourceNotFoundException;
 import lombok.RequiredArgsConstructor;
-import org.springframework.data.crossstore.ChangeSetPersister;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -17,14 +16,13 @@ import java.util.List;
 @Service
 @RequiredArgsConstructor
 public class ContributionService {
-    private final ContributionController contributionController;
     private final ContributionRequestRepository contributionRequestRepository;
     private final BookingService bookingService;
 
 
     @Transactional(readOnly = true)
     public List<ContributionRequest> getContributionRequests(String userId) {
-        return contributionRequestRepository.findAllByReceiverId(Long.valueOf(userId));
+        return contributionRequestRepository.findAllByReceiverId(userId); // make long later
     }
 
     @Transactional

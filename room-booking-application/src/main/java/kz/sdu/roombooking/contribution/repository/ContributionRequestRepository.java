@@ -7,5 +7,5 @@ import javax.crypto.Cipher;
 import java.util.List;
 
 public interface ContributionRequestRepository extends JpaRepository<ContributionRequest, Long> {
-        List<ContributionRequest> findAllByReceiverId(Long receiverId);
+        List<ContributionRequest> findAllByReceiverId(String receiverId);
 }

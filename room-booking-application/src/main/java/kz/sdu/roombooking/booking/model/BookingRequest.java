@@ -59,4 +59,8 @@ public class BookingRequest {
     public void approve() {
         state.approve(this);
     }
+
+    public void reject() {
+        state.reject(this);
+    }
 }
