@@ -17,7 +17,6 @@ import java.util.List;
 @Service
 @RequiredArgsConstructor
 public class ContributionService {
-    private final ContributionController contributionController;
     private final ContributionRequestRepository contributionRequestRepository;
     private final BookingService bookingService;
 
