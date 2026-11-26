@@ -4,6 +4,13 @@ import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.Optional;
 
+import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.jpa.domain.Specification;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.stereotype.Service;
+
 import kz.sdu.roombooking.booking.model.BookingStatus;
 import kz.sdu.roombooking.booking.repository.BookingRequestRepository;
 import kz.sdu.roombooking.booking.repository.RoomSlotRepository;
@@ -14,12 +21,7 @@ import kz.sdu.roombooking.exception.ActiveRequestExistsException;
 import kz.sdu.roombooking.exception.ConflictException;
 import kz.sdu.roombooking.exception.ResourceNotFoundException;
 import kz.sdu.roombooking.exception.UnauthenticatedException;
-import lombok.RequiredArgsConstructor;
-import org.springframework.data.domain.Pageable;
-import org.springframework.data.jpa.domain.Specification;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.stereotype.Service;
+
 
 import kz.sdu.roombooking.booking.dto.RoomSearchCriteria;
 import kz.sdu.roombooking.booking.model.BookingRequest;
@@ -114,8 +116,16 @@ public class BookingService {
 
             bookingRequest.approve();
             slot.setFree(false);
-            // reject the other pending requests for this slot here (ADR step)
+            rejectOtherPendingRequests(slot.getId(), bookingRequest.getId());
         }
+    }
+
+    private void rejectOtherPendingRequests(Long slotId, Long approvedRequestId) {
+        bookingRequestRepository.findByRoomSlotIdAndStatus(slotId, BookingStatus.PENDING)
+        .stream()
+        .filter(other -> !other.getId()
+        .equals(approvedRequestId))
+        .forEach(BookingRequest::reject);
     }
 
 

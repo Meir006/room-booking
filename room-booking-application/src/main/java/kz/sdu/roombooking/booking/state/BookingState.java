@@ -7,4 +7,6 @@ public interface BookingState {
     void addContribution(BookingRequest request);
 
     void approve(BookingRequest request);
+
+    void reject(BookingRequest request);
 }
