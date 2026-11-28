@@ -33,7 +33,7 @@ public class ContributionService {
     }
 
     @Transactional
-    public void reject(Long contributionId, Long userId) {
+    public void decline(Long contributionId, Long userId) {
         getForReceiver(contributionId, userId).decline();
     }
 

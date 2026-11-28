@@ -1,7 +1,6 @@
 package kz.sdu.roombooking.contribution.controller;
 
 import jakarta.servlet.http.HttpSession;
-import kz.sdu.roombooking.booking.model.BookingRequest;
 import kz.sdu.roombooking.contribution.model.ContributionRequest;
 import kz.sdu.roombooking.contribution.service.ContributionService;
 import kz.sdu.roombooking.exception.UnauthenticatedException;
@@ -36,12 +35,12 @@ public class ContributionController {
         contributionService.accept(contributionId, userId);
     }
 
-    @PostMapping("/{id}/reject")
-    public void rejectContribution(@PathVariable("id") Long contributionId, HttpSession session) {
+    @PostMapping("/{id}/decline")
+    public void declineContribution(@PathVariable("id") Long contributionId, HttpSession session) {
         Long userId = (Long) session.getAttribute("userId");
         if (userId == null) {
             throw new UnauthenticatedException();
         }
-        contributionService.reject(contributionId, userId);
+        contributionService.decline(contributionId, userId);
     }
 }
