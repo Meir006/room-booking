@@ -2,6 +2,7 @@ package kz.sdu.roombooking.contribution.model;
 
 import jakarta.persistence.*;
 import kz.sdu.roombooking.booking.model.BookingRequest;
+import kz.sdu.roombooking.exception.ConflictException;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -42,5 +43,24 @@ public class ContributionRequest {
         this.message = message;
     }
 
+    public void accept() {
+        requirePending();
+        status = ContributionStatus.ACCEPTED;
+    }
+
+    public void decline() {
+        requirePending();
+        status = ContributionStatus.DECLINED;
+    }
+
+    public boolean isReceivedBy(Long userId) {
+        return receiverId.equals(userId);
+    }
+
+    private void requirePending() {
+        if (status != ContributionStatus.PENDING) {
+            throw new ConflictException("Contribution request is already processed");
+        }
+    }
 
 }

@@ -15,8 +15,6 @@ import kz.sdu.roombooking.booking.model.BookingStatus;
 import kz.sdu.roombooking.booking.repository.BookingRequestRepository;
 import kz.sdu.roombooking.booking.repository.RoomSlotRepository;
 import kz.sdu.roombooking.booking.repository.RoomSlotSpecification;
-import kz.sdu.roombooking.contribution.model.ContributionRequest;
-import kz.sdu.roombooking.contribution.repository.ContributionRequestRepository;
 import kz.sdu.roombooking.exception.ActiveRequestExistsException;
 import kz.sdu.roombooking.exception.ConflictException;
 import kz.sdu.roombooking.exception.ResourceNotFoundException;
@@ -37,7 +35,6 @@ public class BookingService {
 
     private final RoomSlotRepository roomSlotRepository;
     private final BookingRequestRepository bookingRequestRepository;
-    private final ContributionRequestRepository contributionRequestRepository;
 
     @Transactional(readOnly = true)
     public Page<RoomSlot> searchRooms(
@@ -86,18 +83,6 @@ public class BookingService {
         }
 
         return request;
-    }
-
-
-    @Transactional
-    public ContributionRequest sendRequest(Long bookingRequestId, Long senderId,
-                                           Long receiverId, String message) {
-        requireUserId(senderId);
-        requireUserId(receiverId);
-
-        BookingRequest bookingRequest = bookingStatus(bookingRequestId, senderId);
-
-        return contributionRequestRepository.save(new ContributionRequest(bookingRequest,senderId,receiverId,message));
     }
 
 
