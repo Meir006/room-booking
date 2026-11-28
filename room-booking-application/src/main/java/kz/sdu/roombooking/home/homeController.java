@@ -14,7 +14,7 @@ public class HomeController {
     
     @GetMapping("/")
     public String home(HttpSession session, Model model) {
-        String userId = (String) session.getAttribute("userId");
+    Long userId = (Long) session.getAttribute("userId");
 
         model.addAttribute("loggedIn", userId != null);
         model.addAttribute("userId", userId);
@@ -23,9 +23,7 @@ public class HomeController {
     }
 
     @PostMapping("/login")
-    public String login(
-            @RequestParam String userId,
-            HttpSession session) {
+    public String login(@RequestParam Long userId, HttpSession session) {
 
         session.setAttribute("userId", userId);
 

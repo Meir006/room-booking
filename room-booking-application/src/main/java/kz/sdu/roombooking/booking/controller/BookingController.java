@@ -34,7 +34,7 @@ public class BookingController {
             @RequestParam(defaultValue = "0") int page,
             Model model) {
 
-        String userId = (String) session.getAttribute("userId");
+        Long userId = (Long) session.getAttribute("userId");
 
         Page<RoomSlot> roomSlots = bookingService.loadBookingPage(userId, criteria, page);
 
@@ -46,7 +46,7 @@ public class BookingController {
 
     @PostMapping("/create")
     public String createBooking(@RequestParam Long roomSlotId, HttpSession session) {
-        String userId = (String) session.getAttribute("userId");
+        Long userId = (Long) session.getAttribute("userId");
 
         BookingRequest request = bookingService.createBooking(roomSlotId, userId);
 
@@ -55,7 +55,7 @@ public class BookingController {
 
     @GetMapping("/{requestId}")
     public String bookingStatus(@PathVariable Long requestId, Model model, HttpSession session) {
-        String userId = (String) session.getAttribute("userId");
+        Long userId = (Long) session.getAttribute("userId");
 
         BookingRequest request = bookingService.bookingStatus(requestId, userId);
 

@@ -8,7 +8,7 @@ import java.util.List;
 import java.util.Optional;
 
 public interface BookingRequestRepository extends JpaRepository<BookingRequest, Long> {
-    Optional<BookingRequest> findFirstByUserIdAndStatus(String userId, BookingStatus status);
+    Optional<BookingRequest> findFirstByUserIdAndStatus(Long userId, BookingStatus status);
 
     List<BookingRequest> findByRoomSlotIdAndStatus(Long roomSlotId, BookingStatus status);
 }

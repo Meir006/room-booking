@@ -28,7 +28,7 @@ public class BookingRequest {
     private Long version;
 
     @Column(nullable = false)
-    private String userId;
+    private Long userId;
 
     private int contributions = 0;
 
@@ -47,7 +47,7 @@ public class BookingRequest {
         };
     }
 
-    public BookingRequest(RoomSlot roomSlot, String userId) {
+    public BookingRequest(RoomSlot roomSlot, Long userId) {
         this.roomSlot = roomSlot;
         this.userId = userId;
     }

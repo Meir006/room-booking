@@ -20,12 +20,12 @@ public class ContributionService {
 
 
     @Transactional(readOnly = true)
-    public List<ContributionRequest> getContributionRequests(String userId) {
-        return contributionRequestRepository.findAllByReceiverId(Long.valueOf(userId));
+    public List<ContributionRequest> getContributionRequests(Long userId) {
+        return contributionRequestRepository.findAllByReceiverId(userId);
     }
 
     @Transactional
-    public void accept(Long contributionId, String userId) {
+    public void accept(Long contributionId, Long userId) {
         ContributionRequest contributionRequest = getPendingContributionRequestForReceiver(contributionId, userId);
 
         contributionRequest.setStatus(ContributionStatus.ACCEPTED);
@@ -35,20 +35,19 @@ public class ContributionService {
     }
 
     @Transactional
-    public void reject(Long contributionId, String userId) {
+    public void reject(Long contributionId, Long userId) {
         ContributionRequest contributionRequest = getPendingContributionRequestForReceiver(contributionId, userId);
 
         contributionRequest.setStatus(ContributionStatus.DECLINED);
         contributionRequestRepository.save(contributionRequest);
     }
 
-    private ContributionRequest getPendingContributionRequestForReceiver(Long contributionRequestId, String userId) {
-        Long receiverId = Long.valueOf(userId);
+    private ContributionRequest getPendingContributionRequestForReceiver(Long contributionRequestId, Long userId) {
         ContributionRequest contributionRequest = contributionRequestRepository.findById(contributionRequestId)
-                .orElseThrow(() -> new ResourceNotFoundException("contribution request not found" + receiverId));
+                .orElseThrow(() -> new ResourceNotFoundException("contribution request not found" + userId));
 
-        if(!contributionRequest.getReceiverId().equals(receiverId)) {
-            throw new ResourceNotFoundException("contribution request not found not found: " + receiverId);
+        if(!contributionRequest.getReceiverId().equals(userId)) {
+            throw new ResourceNotFoundException("contribution request not found not found: " + userId);
         }
 
         if(contributionRequest.getStatus() != ContributionStatus.PENDING){

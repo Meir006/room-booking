@@ -17,7 +17,7 @@ public class ContributionController {
 
     @GetMapping
     public List<ContributionRequest> getContributionRequests(HttpSession session) {
-        String userId = (String) session.getAttribute("userId");
+        Long userId = (Long) session.getAttribute("userId");
 
         if (userId == null) {
             throw new UnauthenticatedException();
@@ -27,17 +27,17 @@ public class ContributionController {
     }
 
     @PostMapping("/{id}/accept")
-    public void acceptContribution(@PathVariable("id") String contributionId, HttpSession session) {
-        String userId = (String) session.getAttribute("userId");
+    public void acceptContribution(@PathVariable("id") Long contributionId, HttpSession session) {
+        Long userId = (Long) session.getAttribute("userId");
         if (userId == null) {
             throw new UnauthenticatedException();
         }
-        contributionService.accept(Long.parseLong(contributionId), userId);
+        contributionService.accept(contributionId, userId);
     }
 
     @PostMapping("/{id}/reject")
     public void rejectContribution(@PathVariable("id") String contributionId, HttpSession session) {
-        String userId = (String) session.getAttribute("userId");
+        Long userId = (Long) session.getAttribute("userId");
         if (userId == null) {
             throw new UnauthenticatedException();
         }

@@ -12,7 +12,7 @@ import java.util.Optional;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.ArgumentMatchers.anyString;
+import static org.mockito.ArgumentMatchers.anyLong;
 import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
@@ -45,14 +45,14 @@ class BookingServiceTest {
 
         when(roomSlotRepository.findById(1L)).thenReturn(Optional.of(room));
 
-        when(bookingRequestRepository.findFirstByUserIdAndStatus(anyString(), any())).thenReturn(Optional.empty());
+        when(bookingRequestRepository.findFirstByUserIdAndStatus(anyLong(), any())).thenReturn(Optional.empty());
 
         when(bookingRequestRepository.save(any(BookingRequest.class))).thenAnswer(invocation -> invocation.getArgument(0));
 
-        BookingRequest result = bookingService.createBooking(1L, "student123");
+        BookingRequest result = bookingService.createBooking(1L, 123456789L);
 
         assertEquals(BookingStatus.PENDING, result.getStatus());
-        assertEquals("student123", result.getUserId());
+        assertEquals(123456789L, result.getUserId());
 
         System.out.println("\n\nSUCCESS: Pending booking created successfully! ");
     }
@@ -63,11 +63,11 @@ class BookingServiceTest {
         room.setId(1L);
         room.setFree(true);
 
-        BookingRequest existingRequest = new BookingRequest(room, "student123");
+        BookingRequest existingRequest = new BookingRequest(room, 123456789L);
 
-        when(bookingRequestRepository.findFirstByUserIdAndStatus(anyString(), any())).thenReturn(Optional.of(existingRequest));
+        when(bookingRequestRepository.findFirstByUserIdAndStatus(anyLong(), any())).thenReturn(Optional.of(existingRequest));
 
-        assertThrows(ActiveRequestExistsException.class, () -> bookingService.createBooking(1L, "student123"));
+        assertThrows(ActiveRequestExistsException.class, () -> bookingService.createBooking(1L, 123456789L));
 
         verify(bookingRequestRepository, never()).save(any(BookingRequest.class));
 
@@ -81,9 +81,9 @@ class BookingServiceTest {
 
         when(roomSlotRepository.findById(1L)).thenReturn(Optional.of(room));
 
-        when(bookingRequestRepository.findFirstByUserIdAndStatus(anyString(), any())).thenReturn(Optional.empty());
+        when(bookingRequestRepository.findFirstByUserIdAndStatus(anyLong(), any())).thenReturn(Optional.empty());
 
-        assertThrows(ConflictException.class, () -> bookingService.createBooking(1L, "student123"));
+        assertThrows(ConflictException.class, () -> bookingService.createBooking(1L, 123456789L));
 
         verify(bookingRequestRepository, never()).save(any(BookingRequest.class));
 

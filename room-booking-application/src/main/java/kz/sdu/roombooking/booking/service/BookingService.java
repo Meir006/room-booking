@@ -52,8 +52,8 @@ public class BookingService {
     }
 
     @Transactional(readOnly = true)
-    public Page<RoomSlot> loadBookingPage(String userId, RoomSearchCriteria criteria, int page) {
-        requireUserId(userId); //changed from requireUserWithoutActiveRequest(userId);
+    public Page<RoomSlot> loadBookingPage(Long userId, RoomSearchCriteria criteria, int page) {
+        requireUserWithoutActiveRequest(userId);
 
         Pageable pageable = PageRequest.of(Math.max(page, 0), PAGE_SIZE);
 
@@ -62,7 +62,7 @@ public class BookingService {
     }
 
     @Transactional
-    public BookingRequest createBooking(Long roomSlotId, String userId) {
+    public BookingRequest createBooking(Long roomSlotId, Long userId) {
         requireUserWithoutActiveRequest(userId);
 
         RoomSlot roomSlot = roomSlotRepository.findById(roomSlotId).orElseThrow(() ->
@@ -76,7 +76,7 @@ public class BookingService {
     }
 
     @Transactional(readOnly = true)
-    public BookingRequest bookingStatus(Long requestId, String userId) {
+    public BookingRequest bookingStatus(Long requestId, Long userId) {
         requireUserId(userId);
 
         BookingRequest request = getBookingRequest(requestId);
@@ -90,14 +90,14 @@ public class BookingService {
 
 
     @Transactional
-    public ContributionRequest sendRequest(Long bookingRequestId, String senderId,
-                                           String receiverId, String message) {
+    public ContributionRequest sendRequest(Long bookingRequestId, Long senderId,
+                                           Long receiverId, String message) {
         requireUserId(senderId);
         requireUserId(receiverId);
 
         BookingRequest bookingRequest = bookingStatus(bookingRequestId, senderId);
 
-        return contributionRequestRepository.save(new ContributionRequest(bookingRequest,senderId,Long.valueOf(receiverId),message));
+        return contributionRequestRepository.save(new ContributionRequest(bookingRequest,senderId,receiverId,message));
     }
 
 
@@ -129,20 +129,20 @@ public class BookingService {
     }
 
 
-    private void requireUserId(String userId) {
+    private void requireUserId(Long userId) {
         if (userId == null) {
             throw new UnauthenticatedException();
         }
     }
 
-    private void requireNoActiveRequest(String userId) {
+    private void requireNoActiveRequest(Long userId) {
         getActiveRequest(userId).ifPresent(activeRequest -> {
             throw new ActiveRequestExistsException(activeRequest.getId());
         });
     }
 
     // the combination used by both "start booking" paths
-    private void requireUserWithoutActiveRequest(String userId) {
+    private void requireUserWithoutActiveRequest(Long userId) {
         requireUserId(userId);
         requireNoActiveRequest(userId);
     } 
@@ -154,7 +154,7 @@ public class BookingService {
     }
 
     @Transactional(readOnly = true)
-    public Optional<BookingRequest> getActiveRequest(String userId) {
+    public Optional<BookingRequest> getActiveRequest(Long userId) {
         return bookingRequestRepository.findFirstByUserIdAndStatus(userId, BookingStatus.PENDING);
     }
     
