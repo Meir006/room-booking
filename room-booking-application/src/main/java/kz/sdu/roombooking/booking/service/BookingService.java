@@ -97,7 +97,7 @@ public class BookingService {
 
         BookingRequest bookingRequest = bookingStatus(bookingRequestId, senderId);
 
-        return contributionRequestRepository.save(new ContributionRequest(bookingRequest,senderId,receiverId,message));
+        return contributionRequestRepository.save(new ContributionRequest(bookingRequest,senderId,Long.valueOf(receiverId),message));
     }
 
 

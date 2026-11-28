@@ -27,7 +27,7 @@ public class ContributionRequest {
     private String senderId;
 
     @Column(nullable = false)
-    private String receiverId;
+    private Long receiverId;
 
     @Column(length = 500)
     private String message;
@@ -35,7 +35,7 @@ public class ContributionRequest {
     @Enumerated(EnumType.STRING)
     private ContributionStatus status = ContributionStatus.PENDING;
 
-    public ContributionRequest(BookingRequest bookingRequest, String senderId, String receiverId, String message) {
+    public ContributionRequest(BookingRequest bookingRequest, String senderId, Long receiverId, String message) {
         this.bookingRequest = bookingRequest;
         this.senderId = senderId;
         this.receiverId = receiverId;
