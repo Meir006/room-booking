@@ -23,20 +23,22 @@
         <section class="status">
             <h1 th:text="'Booking Request #' + ${request.id}">Booking Request #</h1>
 
-            <div class="contRow">
-                <p>Date: <span th:text="${request.roomSlot.date}"></span></p>
+            <div class="contStatusInfo">
+                <div class="contRow">
+                    <p>Date:&nbsp;<span th:text="${request.roomSlot.date}"></span></p>
 
-                <p>Room: <span th:text="${request.roomSlot.room}"></span></p>
-            </div>
+                    <p>Room:&nbsp;<span th:text="${request.roomSlot.room}"></span></p>
+                </div>
 
-            <div class="contRow">
-                <p>Status: <span th:text="${request.status}"></span></p>
+                <div class="contRow">
+                    <p>Status:&nbsp;<span th:text="${request.status}"></span></p>
 
-                <p>Contributions: <span th:text="${request.contributions}"></span>/ 5</p>
+                    <p>Contributions:&nbsp;<span th:text="${request.contributions}"></span>&nbsp;/ 5</p>
+                </div>
             </div>
         </section>
 
-        <section class="status">
+        <section class="status statusRequest">
 
             <h1>Contribution requests</h1>
 

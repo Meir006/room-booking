@@ -398,6 +398,9 @@ input[type="time"]::-webkit-calendar-picker-indicator {
     border-width: 2px; 
     border-style: solid;
     height: 300px;
+}
+
+.statusRequest {
     display: flex;
     justify-content: space-between;
     flex-direction: column;
@@ -407,14 +410,34 @@ input[type="time"]::-webkit-calendar-picker-indicator {
     display: flex;
 }
 
-.status p {
-    font-size: 24px;
-    font-weight: bold;
-    width: 35%;
+.status .contRow:first-child {
+    margin-top: 20px;
 }
 
-.status p:first-child {
-    margin-right: 20%;
+.status p {
+    font-size: 27px;
+    font-weight: bold;
+    width: 50%;
+    margin: 3px;
+}
+
+.contStatusInfo p {
+    background-color: #292828;
+    color: white;
+    height: 120px;
+    display: flex;
+    border-radius: 10px;
+    justify-content: center;
+    align-items: center;
+    transition: transform 0.4s ease;
+}
+
+.contStatusInfo p:hover {
+    transform: scale(1.02);
+}
+
+.contStatusInfo p:first-child {
+    margin-right: 3px;
 }
 
 .status button {
